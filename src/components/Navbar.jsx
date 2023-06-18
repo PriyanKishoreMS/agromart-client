@@ -15,7 +15,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className='flex flex-wrap items-center justify-between p-6 bg-teal-500'>
+		<nav className='flex flex-wrap items-center justify-between w-full p-6 mb-10 bg-teal-500 lg:px-20'>
 			<div className='flex items-center flex-shrink-0 mr-6 text-white'>
 				<Link to='/'>
 					<span className='text-xl font-semibold tracking-tight'>AgroMart</span>
@@ -41,17 +41,25 @@ const Navbar = () => {
 			</div>
 			<div className='flex-grow w-full lg:flex lg:items-center lg:w-auto'>
 				<div className='text-sm lg:flex-grow'>
-					<Link
-						to='/profile'
-						className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
-					>
-						Profile
-					</Link>
+					{user?.displayName && (
+						<Link
+							to='/profile'
+							className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
+						>
+							Profile
+						</Link>
+					)}
 					<Link
 						to='/'
 						className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
 					>
 						Home
+					</Link>
+					<Link
+						to='/users'
+						className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
+					>
+						Users
 					</Link>
 				</div>
 				{user?.displayName ? (
@@ -63,7 +71,7 @@ const Navbar = () => {
 							Log Out
 						</button>
 						<img
-							className='inline-block w-10 h-10 mx-5 rounded-full'
+							className='inline-block mx-5 rounded-full w-7 h-7'
 							src={user?.photoURL}
 							alt={user?.displayName}
 						/>

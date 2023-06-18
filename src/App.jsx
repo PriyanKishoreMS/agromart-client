@@ -5,23 +5,31 @@ import Profile from "./pages/Profile";
 import { Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "./hooks/useAuth";
 import Protected from "./components/Protected";
+import Users from "./pages/Users";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
 function App() {
 	return (
 		<>
-			<AuthContextProvider>
-				<Routes>
-					<Route path='/signin' element={<Signin />} />
-					<Route path='/' element={<Home />} />
-					<Route
-						path='/profile'
-						element={
-							<Protected>
-								<Profile />
-							</Protected>
-						}
-					/>
-				</Routes>
-			</AuthContextProvider>
+			<QueryClientProvider client={queryClient}>
+				<AuthContextProvider>
+					<Routes>
+						<Route path='/signin' element={<Signin />} />
+						<Route path='/' element={<Home />} />
+						<Route path='/users' element={<Users />} />
+						<Route
+							path='/profile'
+							element={
+								<Protected>
+									<Profile />
+								</Protected>
+							}
+						/>
+					</Routes>
+				</AuthContextProvider>
+			</QueryClientProvider>
 		</>
 	);
 }

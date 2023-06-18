@@ -6,6 +6,7 @@ import {
 	signOut,
 } from "firebase/auth";
 import { auth } from "../components/firebaseauthconfig";
+import { createUser } from "../api/usersApi";
 
 const AuthContext = createContext();
 
@@ -19,6 +20,7 @@ export const AuthContextProvider = ({ children }) => {
 	const logOut = async () => {
 		try {
 			await signOut(auth);
+			localStorage.removeItem("token");
 		} catch (error) {
 			console.log(error);
 		}
@@ -27,7 +29,15 @@ export const AuthContextProvider = ({ children }) => {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, currentUser => {
 			setUser(currentUser);
-			console.log("user", currentUser);
+			if (currentUser) {
+				const userData = {
+					uid: currentUser.uid,
+					email: currentUser.email,
+					name: currentUser.displayName,
+					photoURL: currentUser.photoURL,
+				};
+				createUser(userData);
+			}
 		});
 		return () => {
 			unsubscribe();
