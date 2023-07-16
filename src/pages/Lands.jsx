@@ -33,11 +33,21 @@ const Lands = () => {
 								key={land.id}
 								className='flex items-center p-4 duration-200 ease-in-out rounded-lg shadow-md bg-slate-200 hover:bg-slate-300 transition:all'
 							>
-								<img
+								{land.landImage.map((image, index) => {
+									return (
+										<img
+											key={index}
+											src={`http://localhost:3000/${image}`}
+											alt={land.landLocation}
+											className='w-24 h-24 mb-2 mr-4 '
+										/>
+									);
+								})}
+								{/* <img
 									src={`http://localhost:3000/${land.landImage[0]}`}
 									alt={land.landLocation}
 									className='w-24 h-24 mb-2 mr-4 rounded-full'
-								/>
+								/> */}
 								<div className='text-left'>
 									<h2 className='mb-2 text-xl font-bold'>
 										{land.landLocation}
