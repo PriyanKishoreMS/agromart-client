@@ -19,3 +19,16 @@ export const getUsers = async () => {
 		console.error({ Message: "Error getting user data", Error: err });
 	}
 };
+
+export const getLandServices = async () => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};

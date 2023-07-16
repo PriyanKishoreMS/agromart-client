@@ -42,12 +42,20 @@ const Navbar = () => {
 			<div className='flex-grow w-full lg:flex lg:items-center lg:w-auto'>
 				<div className='text-sm lg:flex-grow'>
 					{user?.displayName && (
-						<Link
-							to='/profile'
-							className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
-						>
-							Profile
-						</Link>
+						<>
+							<Link
+								to='/profile'
+								className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
+							>
+								Profile
+							</Link>
+							<Link
+								to='/lands'
+								className='block mt-4 mr-4 text-teal-200 lg:inline-block lg:mt-0 hover:text-white'
+							>
+								Lands
+							</Link>
+						</>
 					)}
 					<Link
 						to='/'

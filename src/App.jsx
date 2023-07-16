@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Profile from "./pages/Profile";
+import Lands from "./pages/Lands";
 import { Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "./hooks/useAuth";
 import Protected from "./components/Protected";
@@ -19,6 +20,14 @@ function App() {
 						<Route path='/signin' element={<Signin />} />
 						<Route path='/' element={<Home />} />
 						<Route path='/users' element={<Users />} />
+						<Route
+							path='/lands'
+							element={
+								<Protected>
+									<Lands />
+								</Protected>
+							}
+						/>
 						<Route
 							path='/profile'
 							element={
