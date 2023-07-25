@@ -1,0 +1,34 @@
+.carousel-container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.carousel-slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.carousel-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.carousel-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .carousel-container {
+        width: 90%;
+    }
+}
+
+/* .cursor-pointer:hover p {
+    color: #d4a65e;
+  } */

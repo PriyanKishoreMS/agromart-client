@@ -1,0 +1,24 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-content {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.loading-spinner {
+  margin-right: 0.5rem;
+  font-size: 2rem;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

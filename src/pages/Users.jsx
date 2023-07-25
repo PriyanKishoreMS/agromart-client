@@ -1,6 +1,9 @@
 import Navbar from "../components/Navbar";
 import { useQuery } from "react-query";
 import { getUsers } from "../api/usersApi";
+import Footer from "./Footer";
+// import users from "../components/userlistdummy";
+import { useNavigate } from "react-router-dom";
 
 const Users = () => {
 	const { isError, isLoading, isSuccess, data, error } = useQuery(
@@ -8,12 +11,51 @@ const Users = () => {
 		getUsers
 	);
 
-	if (isSuccess) console.log(data);
+	const navigate = useNavigate();
+
+	// if (isSuccess) console.log(data);
+
+	// const users = [
+	// 	{ name: 'John Doe', email: 'john.doe@example.com', mobile: '1234567890', propertyType: 'Agri' },
+	// 	{ name: 'Jane Smith', email: 'jane.smith@example.com', mobile: '9876543210', propertyType: 'Agri' },
+	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
+	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
+	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
+	// ];
+
+	const handleusernav = () => {
+		navigate('/workinprogress');
+	}
+
 
 	return (
 		<>
-			<Navbar />
-			<div className='container mx-auto'>
+			<div className="bg-stone-100">
+				<Navbar />
+				<div className="container mx-auto py-8">
+					<h1 className="text-3xl font-bold text-center mb-6">User List</h1>
+					{data &&
+						data.user.map(user => (
+							<button
+								key={user.id}
+								className='flex items-center p-4 duration-200 ease-in-out rounded-lg shadow-md bg-slate-200 hover:bg-slate-300 transition:all'
+							>
+								<img
+									src={user.photoURL}
+									alt={user.name}
+									className='w-24 h-24 mb-2 mr-4 rounded-full'
+								/>
+								<div className='text-left'>
+									<h2 className='mb-2 text-xl font-bold'>{user.name}</h2>
+									<p className='text-gray-600'>{user.email}</p>
+								</div>
+							</button>
+						))}
+				</div>
+
+				<Footer />
+			</div>
+			{/* <div className='container mx-auto'>
 				<h1 className='mb-4 text-2xl font-bold'>User List</h1>
 				{isLoading && <p>Loading...</p>}
 				{isError && <p>{error.message}</p>}
@@ -35,8 +77,8 @@ const Users = () => {
 								</div>
 							</button>
 						))}
-				</div>
-			</div>
+				</div>	
+			</div> */}
 		</>
 	);
 };
