@@ -50,3 +50,44 @@
 .animate-fade-in {
   animation: fadeIn 1s ease-in-out both;
 }
+
+.effect-container {
+  position: relative;
+  overflow: hidden;
+  --effect-name: ripple;
+  --effect-duration: 1000ms;
+  --effect-top: 0px;
+  --effect-left: 0px;
+  --effect-height: 100px;
+  --effect-width: 100px;
+  --effect-color: white;
+}
+
+.effect-container::before {
+  position: absolute;
+  opacity: 0.3;
+  content: "";
+  top: var(--effect-top);
+  left: var(--effect-left);
+  width: var(--effect-width);
+  height: var(--effect-height);
+  border-radius: 20%;
+  transform: scale(0);
+  background: var(--effect-color);
+}
+
+.effect-container.active::before { 
+  border-radius: 20%;
+  animation: ripple var(--effect-duration) linear forwards;
+}
+
+@keyframes ripple {
+  from {
+  transform: scale(0);
+  }
+
+  to {  
+ transform: Scale (6);
+  opacity: 0;
+}
+}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import fetchfirebase from '../components/fetchfirebase';
+// import fetchfirebase from '../components/fetchfirebase';
 // import Footer from './Footer';
 // import Navbar from '../components/Navbar';
-import "./loading.css";
+import "../components/loading.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faPlus } from '@fortawesome/free-solid-svg-icons';
 // import bgprof from "../assets/bgprof.png"
@@ -22,10 +22,11 @@ const Dashboard = () => {
   // const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [page, setPage] = useState(1);
 
-  const { isError, isLoading, isSuccess, data, error } = useQuery(
-    ["lands", searchQuery],
-    () => getFilteredLandServices(searchQuery)
+  const { isError, isLoading, isSuccess, data, error, totalPages } = useQuery(
+    ["lands", searchQuery, page],
+    () => getFilteredLandServices(searchQuery, page)
   );
 
   const handleMouseEnter = (index) => {
@@ -34,6 +35,21 @@ const Dashboard = () => {
 
   const handleMouseLeave = () => {
     setHoveredIndex(-1);
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  console.log("totalllllll", data , page);
+
+  // Handle the next page
+  const handleNextPage = () => {
+    if (page < data.totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   const navigate = useNavigate();
@@ -92,8 +108,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="flex flex-row justify-between mr-5">
-        <button onClick={handlelandlease} className="bg-mybgcolor text-white py-2 px-4 rounded self-end mt-4">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center md:mr-5">
+        <button onClick={handlelandlease} className="bg-mybgcolor-500 text-white py-2 px-4 rounded lg:self-end mt-4 md:mt-0">
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Add Land for Lease
         </button>
@@ -102,7 +118,7 @@ const Dashboard = () => {
           placeholder="Search by location..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="mt-4 px-4 py-2 rounded-lg border border-gray-400 focus:outline-none focus:border-yellow-700"
+          className="lg:mt-4 md:mt-0 px-4 py-2 rounded-lg border border-gray-400 focus:outline-none focus:border-yellow-700"
         />
       </div>
 
@@ -128,6 +144,7 @@ const Dashboard = () => {
                         <div key={imgIndex} className="carousel-image">
                           <img
                             src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                            // src={`http://localhost:3000/${imageUrl}`}
                             alt={`Image ${imgIndex + 1}`}
                             className="max-w-full container mb-2"
                             style={{ width: '500px', height: '250px' }}
@@ -147,7 +164,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div
-              className="bg-mybgcolor rounded-3xl items-center justify-center  text-center border border-mybgcolor pl-2 text-white w-full h-12"
+              className="bg-mybgcolor-500 rounded-3xl items-center justify-center  text-center border border-mybgcolor-500 pl-2 text-white w-full h-12"
               onClick={() => handleDetailClick(item, index)}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave()}
@@ -163,6 +180,22 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={page === 0}
+          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNextPage}
+          disabled={page === data.totalPages}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Next
+        </button>
       </div>
     </>
   );

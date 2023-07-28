@@ -20,7 +20,7 @@ const ProductDetailScreen = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap min-h-screen">
                 <div className="w-full md:w-1/2 lg:w-1/4">
                     <div className="lg:mt-4">
                         <Carousel
@@ -38,6 +38,7 @@ const ProductDetailScreen = () => {
                                     <div key={imgIndex} className="carousel-image">
                                         <img
                                             src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                            // src={`http://localhost:3000/${imageUrl}`}
                                             alt={`Image ${imgIndex + 1}`}
                                             className="max-w-full container mb-2"
                                             style={{ width: '100%', height: '250px' }}
@@ -46,9 +47,9 @@ const ProductDetailScreen = () => {
                                 ))
                             ) : (
                                 <img
-                                  src={noimage}
-                                  className="max-w-full container mb-2"
-                                  style={{ width: '500px', height: '250px' }}
+                                    src={noimage}
+                                    className="max-w-full container mb-2"
+                                    style={{ width: '500px', height: '250px' }}
                                 />
                             )}
                         </Carousel>
@@ -59,6 +60,7 @@ const ProductDetailScreen = () => {
                                 <div key={imgIndex} className="gallery-item">
                                     <img
                                         src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                        // src={`http://localhost:3000/${imageUrl}`}
                                         alt={`Image ${imgIndex + 1}`}
                                         style={{ width: '72px', height: '72x' }}
                                     />
@@ -85,10 +87,10 @@ const ProductDetailScreen = () => {
                             <strong>Product Description:</strong> {data.productDescription}
                         </p>
                         <div className="flex justify-end mt-4">
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor text-white py-2 px-4 rounded mr-2">
+                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded mr-2">
                                 Add to Cart
                             </button>
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor text-white py-2 px-4 rounded">
+                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded">
                                 Buy Now
                             </button>
                         </div>

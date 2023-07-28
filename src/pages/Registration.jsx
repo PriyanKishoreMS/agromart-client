@@ -3,9 +3,6 @@ import Navbar from '../components/Navbar';
 import Footer from './Footer';
 import { useAuth } from '../hooks/useAuth';
 import firebase from '../components/firebaseConfig';
-const {
-    VITE_DATABASE_URL
-} = import.meta.env;
 
 const Registration = () => {
     const { user } = useAuth();
@@ -208,7 +205,7 @@ const Registration = () => {
                             <div ref={recaptchaRef}></div>
                             <button
                                 onClick={sendOTP}
-                                className="bg-mybgcolor text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                                className="bg-mybgcolor-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                             >
                                 Send OTP
                             </button>
@@ -226,7 +223,7 @@ const Registration = () => {
                                 />
                                 <button
                                     onClick={verifyOTP}
-                                    className="bg-mybgcolor mt-2 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                                    className="bg-mybgcolor-500 mt-2 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                                 >
                                     Verify OTP
                                 </button>
@@ -234,7 +231,7 @@ const Registration = () => {
                         )}
                         <button
                             type="submit"
-                            className="bg-mybgcolor text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                            className="bg-mybgcolor-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                         >
                             Register
                         </button>

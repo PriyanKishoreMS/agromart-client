@@ -16,7 +16,8 @@ import SellProductDashboard from "./pages/SellProductsDashboard";
 import LandLeaseDetailScreen from "./pages/LandLeaseDetailScreen";
 import ProductDetailScreen from "./pages/ProductDetailScreen";
 import Registration from "./pages/Registration";
-import AdminProfile from "./pages/Admin/AdminProfile";
+import DonateScreen from "./pages/DonateScreen";
+import SellerProfile from "./pages/Admin/SellerProfile";
 
 const queryClient = new QueryClient();
 
@@ -28,16 +29,66 @@ function App() {
 					<Routes>
 						<Route path='/signin' element={<Signin />} />
 						<Route path='/' element={<Home />} />
-						<Route path='/adminprofile' element={<AdminProfile />} />
+						<Route path='/donate' element={<DonateScreen />} />
+						<Route
+							path='/sellerProfile'
+							element={
+								<Protected>
+									<SellerProfile />
+								</Protected>
+							}
+						/>
 						<Route path='/register' element={<Registration />} />
-						<Route path='/sellproductservice' element={<SellProductService />} />
-						<Route path='/dashboard' element={<Dashboard />} />
-						<Route path='/productdashboard' element={<SellProductDashboard />} />
+						<Route
+							path='/sellproductservice'
+							element={
+								<Protected>
+									<SellProductService />
+								</Protected>
+							}
+						/>
+						<Route
+							path='/dashboard'
+							element={
+								<Protected>
+									<Dashboard />
+								</Protected>
+							}
+						/>
+						<Route
+							path='/productdashboard'
+							element={
+								<Protected>
+									<SellProductDashboard />
+								</Protected>
+							}
+						/>
 						<Route path='/workinprogress' element={<WorkInProgress />} />
 						<Route path='/users' element={<Users />} />
-						<Route path='/landsellingservice' element={<LandLeaseService />} />
-						<Route path="/landleasedetail/:index" element={<LandLeaseDetailScreen />} />
-						<Route path="/productdetail/:index" element={<ProductDetailScreen />} />
+						<Route
+							path='/landsellingservice'
+							element={
+								<Protected>
+									<LandLeaseService />
+								</Protected>
+							}
+						/>
+						<Route
+							path="/landleasedetail/:index"
+							element={
+								<Protected>
+									<LandLeaseDetailScreen />
+								</Protected>
+							}
+						/>
+						<Route
+							path="/productdetail/:index"
+							element={
+								<Protected>
+									<ProductDetailScreen />
+								</Protected>
+							}
+						/>
 						<Route
 							path='/profile'
 							element={

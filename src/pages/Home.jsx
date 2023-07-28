@@ -1,7 +1,5 @@
 import Navbar from "../components/Navbar";
 import backgroundImage from '../assets/hero.png';
-import quote from '../assets/quote.svg';
-import how from '../assets/how-is-works-bg.png';
 import invest1 from '../assets/investments/invest-1.png';
 import invest2 from '../assets/investments/invest-2.png';
 import prof1 from '../assets/testimonials/1.png';
@@ -14,18 +12,13 @@ import agribg4 from '../assets/bg/Agribg4.jpg';
 import agribg5 from '../assets/bg/Agribg5.jpg';
 import { useEffect, useState } from "react";
 import './Home.css';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
-import bgprof from "../assets/bgprof.png"
 
 const Home = () => {
-	const [showHeader, setShowHeader] = useState(false);
-	const [leaseData, setLeaseData] = useState([]);
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-
-	const location = useLocation();
-	const formData = location.state;
+	const [showButton, setShowButton] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -53,10 +46,28 @@ const Home = () => {
 		};
 	}, []);
 
-
 	useEffect(() => {
-		setShowHeader(true);
+		const handleScroll = () => {
+			if (window.scrollY > 100) {
+				setShowButton(true);
+			} else {
+				setShowButton(false);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
 	}, []);
+
+	const handleScrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
 
 	const handlebrowsefarm = () => {
 		window.location.href = 'https://sustainableworldpeacetrust.org/';
@@ -87,9 +98,9 @@ const Home = () => {
 				<div className="bg-white pb-0 min-h-screen flex flex-col md:flex-row">
 					<div className="container px-4 my-8 mx-auto bg-fixed bg-auto bg-right md:w-1/2">
 						<div className="bg-cover bg-center flex justify-center items-center transition-opacity duration-1000">
-							<h1 className={`lg:text-4xl md:text-3xl mb-8 text-2xl font-bold text-center text-mybgcolor	 animate-fade-in`}>
+							<h1 className={`lg:text-4xl md:text-3xl mb-8 text-2xl font-bold text-center text-mybgcolor-500	 animate-fade-in`}>
 								Welcome to
-								<h2 className="text-4xl font-bold text-mybgcolor font-serif italic">Agroவாங்கோ</h2>
+								<h2 className="text-4xl font-bold text-mybgcolor-500 font-serif italic">Agroவாங்கோ</h2>
 								{/* <p>Agroவாங்கோ</p> */}
 							</h1>
 						</div>
@@ -101,7 +112,7 @@ const Home = () => {
 								<p className="text-slate-800 mt-5 text-center">
 									Company provides farmers, ranchers, private foresters, and agricultural producers with online self-service applications and educational materials.
 								</p>
-								<button onClick={handleSignin} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-mybgcolor hover:bg-white px-4 py-3  outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform mx-5 flex"> {/* Added mx-auto class */}
+								<button onClick={handleSignin} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white px-4 py-3  outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform mx-5 flex">
 									Register Now
 								</button>
 							</div>
@@ -134,7 +145,7 @@ const Home = () => {
 								</p>
 							</div>
 
-							<div className="p-6 sm:p-10 py-20 sm:py-28 transition-all duration-150 ease-in-out bg-slate-100 rounded shadow hover:shadow-2xl bg-cover"   style={{ backgroundImage: `url(${agribg5})` }}>
+							<div className="p-6 sm:p-10 py-20 sm:py-28 transition-all duration-150 ease-in-out bg-slate-100 rounded shadow hover:shadow-2xl bg-cover" style={{ backgroundImage: `url(${agribg5})` }}>
 								<h2 className="mb-4 text-2xl font-bold text-yellow-700">
 									Social Impact Investment
 								</h2>
@@ -161,36 +172,36 @@ const Home = () => {
 						<div className="container mx-auto px-4 lg:px-72 py-8">
 							<div className="grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2">
 								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest1})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor">
+									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor-500">
 										New Farm Today
 									</h2>
 									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Short-term investment</h1>
 									<p className="text-white">
 										Invest in farms that will be ready for harvest in 3-18 months
 									</p>
-									<button onClick={handlebrowsefarm} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-mybgcolor hover:bg-white">Browse Farm</button>
+									<button onClick={handlebrowsefarm} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">Browse Farm</button>
 								</div>
 								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest2})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor">
+									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor-500">
 										Fully Funded
 									</h2>
 									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Long-term investment</h1>
 									<p className="text-white">
 										Consider farms that have a long-term investment program
 									</p>
-									<button onClick={handlelearnmore} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-mybgcolor hover:bg-white">Learn more</button>
+									<button onClick={handlelearnmore} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">Learn more</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className="justify-center pt-10 items-center pb-20 bg-yellow-50 bg-no-repeat bg-cover">
-					<div className="mx-8 md:mx-48 pb-16 bg-mybgcolor border pt-12 bg-cover relative">
+					<div className="mx-8 md:mx-48 pb-16 bg-mybgcolor-500 border pt-12 bg-cover relative">
 						<h1 className="mb-4 text-center lg:text-4xl sm:text-2xl font-bold text-white pl-4 md:pl-10">How it works</h1>
 						<p className="text-white text-center text-xl md:text-2xl mx-4 md:mx-48">
 							Take lands based on your requirements. We provide you affordable options.
 						</p>
-						<div className="grid grid-cols-1 md:grid-cols-2 px-4 md:px-5 py-8 border-2 border-mybgcolor mx-4 md:mx-48 mt-10 transition-all duration-150 ease-in-out rounded-xl shadow-lg">
+						<div className="grid grid-cols-1 md:grid-cols-2 px-4 md:px-5 py-8 border-2 border-mybgcolor-500 mx-4 md:mx-48 mt-10 transition-all duration-150 ease-in-out rounded-xl shadow-lg">
 							<div>
 								<p className="mb-4 text-center lg:text-3xl sm:text-sm font-bold text-white">
 									Select your farmshare and complete the reservation form.
@@ -204,11 +215,11 @@ const Home = () => {
 						</div>
 					</div>
 				</div>
-				<div className="justify-center items-center bg-white py-8 bg-no-repeat bg-cover"  style={{ backgroundImage: `url(${agribg2})` }}>
+				<div className="justify-center items-center bg-white py-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg2})` }}>
 					<div className="grid grid-cols-1 mt-10 gap-2 sm:grid-cols-2 lg:grid-cols-3">
 						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
 							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof1} className="w-1/4 h-1/3 z-0 animate-bounce" alt="Profile 1" />
+								<img src={prof1} className="w-1/4 h-1/3 z-0 " alt="Profile 1" />
 								<div className="flex-grow">
 									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
 										Mr. Singh
@@ -224,7 +235,7 @@ const Home = () => {
 						</div>
 						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
 							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof2} className="w-1/4 h-1/3 z-0 animate-bounce" alt="Profile 2" />
+								<img src={prof2} className="w-1/4 h-1/3 z-0 " alt="Profile 2" />
 								<div className="flex-grow">
 									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
 										Mrs. Nair
@@ -240,7 +251,7 @@ const Home = () => {
 						</div>
 						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
 							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof3} className="w-1/4 h-1/3 z-0 animate-bounce" alt="Profile 3" />
+								<img src={prof3} className="w-1/4 h-1/3 z-0 " alt="Profile 3" />
 								<div className="flex-grow">
 									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
 										Mr. Shah
@@ -260,18 +271,35 @@ const Home = () => {
 					<div className="mx-auto lg:w-3/4">
 						<div className="border-2 lg:py-12 duration-150 bg-yellow-50 rounded shadow-xl">
 							<h1 className="text-black text-center lg:text-4xl md:text-3xl">
-								The future of <a className="text-mybgcolor font-serif font-bold">
+								The future of <a className="text-mybgcolor-500 font-serif font-bold">
 									<span className="text-yellow-900">Farm</span> Investing
 								</a> is <span className="text-yellow-700 font-serif font-bold italic">Agroவாங்கோ</span>
 							</h1>
 							<div className="flex justify-center items-center pt-5">
-								<button onClick={handleSignin} className="border-2 mt-4 px-8 py-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-mybgcolor hover:bg-white">
+								<button onClick={handleSignin} className="border-2 mt-4 px-8 py-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">
 									Join Us
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				<button
+					className={`fixed bottom-4 right-4 p-3 bg-yellow-700 text-white rounded-lg ${showButton ? 'block' : 'hidden'
+						}`}
+					onClick={handleScrollToTop}
+				>
+					<svg
+						className={`w-6 h-6 transition-transform rotate-180`}
+						viewBox="0 0 20 20"
+						fill="currentColor"
+					>
+						<path
+							fillRule="evenodd"
+							d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+							clipRule="evenodd"
+						/>
+					</svg>
+				</button>
 				<Footer />
 			</div>
 		</>

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import fetchfirebase from '../components/fetchfirebase';
-import Footer from './Footer';
-import Navbar from '../components/Navbar';
+// import fetchfirebase from '../components/fetchfirebase';
+// import Footer from './Footer';
+// import Navbar from '../components/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faPlus } from '@fortawesome/free-solid-svg-icons';
-import "./loading.css";
-import bgprof from "../assets/bgprof.png"
+import "../components/loading.css";
+// import bgprof from "../assets/bgprof.png"
 import { Carousel } from 'react-responsive-carousel';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+// import Slider from 'react-slick';
+// import 'slick-carousel/slick/slick.css';
+// import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 import { getProduct } from '../api/usersApi';
 import { useQuery } from 'react-query';
@@ -40,29 +40,29 @@ const SellProductDashboard = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // setIsLoading(true);
-      const formDataRef = fetchfirebase.database().ref('sellProducts');
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // setIsLoading(true);
+  //     const formDataRef = fetchfirebase.database().ref('sellProducts');
 
-      try {
-        const snapshot = await formDataRef.once('value');
-        const formDataList = [];
+  //     try {
+  //       const snapshot = await formDataRef.once('value');
+  //       const formDataList = [];
 
-        snapshot.forEach((childSnapshot) => {
-          const data = childSnapshot.val();
-          formDataList.push(data);
-        });
+  //       snapshot.forEach((childSnapshot) => {
+  //         const data = childSnapshot.val();
+  //         formDataList.push(data);
+  //       });
 
-        setFormData(formDataList);
-      } catch (error) {
-        console.error('Error fetching data from Firebase:', error);
-      }
-      // setIsLoading(false);
-    };
+  //       setFormData(formDataList);
+  //     } catch (error) {
+  //       console.error('Error fetching data from Firebase:', error);
+  //     }
+  //     // setIsLoading(false);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   var settings = {
     infinite: true,
@@ -135,7 +135,8 @@ const SellProductDashboard = () => {
                     item.productImage.map((imageUrl, imgIndex) => (
                       <div key={imgIndex} className="carousel-image">
                         <img
-                          src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                          // src={`https://agromart-dev.onrender.com/${imageUrl}`} 
+                          src={`http://localhost:3000/${imageUrl}`}
                           alt={`Image ${imgIndex + 1}`}
                           className="max-w-full container mb-2"
                           style={{ width: '500px', height: '250px' }} // Set the desired height here
@@ -152,7 +153,7 @@ const SellProductDashboard = () => {
                 </Carousel>
               </div>
               <div
-                className="bg-mybgcolor rounded-3xl items-center justify-center  text-center border border-mybgcolor pl-2 text-white w-full h-12"
+                className="bg-mybgcolor-500 rounded-3xl items-center justify-center  text-center border border-mybgcolor-500 pl-2 text-white w-full h-12"
                 onClick={() => handleDetailClick(item, index)}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}

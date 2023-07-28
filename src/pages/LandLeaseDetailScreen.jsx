@@ -19,7 +19,7 @@ const LandLeaseDetailScreen = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap min-h-screen">
                 <div className="w-full md:w-1/2 lg:w-1/4">
                     <div className="lg:mt-20">
                         <Carousel
@@ -35,8 +35,10 @@ const LandLeaseDetailScreen = () => {
                             {data.landImage && data.landImage.length > 0 ? (
                                 data.landImage.map((imageUrl, imgIndex) => (
                                     <div key={imgIndex} className="carousel-image">
+                                        {/* {console.log(imageUrl,"imageURL")} */}
                                         <img
                                             src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                            // src={`http://localhost:3000/${imageUrl}`}
                                             alt={`Image ${imgIndex + 1}`}
                                             className="max-w-full container mb-2"
                                             style={{ width: '100%', height: '250px' }}
@@ -57,6 +59,7 @@ const LandLeaseDetailScreen = () => {
                                     <div key={imgIndex} className="gallery-item">
                                         <img
                                             src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                            // src={`http://localhost:3000/${imageUrl}`}
                                             alt={`Image ${imgIndex + 1}`}
                                             style={{ width: '72px', height: '72x' }}
                                         />
@@ -98,10 +101,10 @@ const LandLeaseDetailScreen = () => {
                             <span className="font-bold">Land Description:</span> {data.landDesc}
                         </p>
                         <div className="flex justify-end mt-4">
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor text-white py-2 px-4 rounded mr-2">
+                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded mr-2">
                                 Add to Cart
                             </button>
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor text-white py-2 px-4 rounded">
+                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded">
                                 Buy Now
                             </button>
                         </div>

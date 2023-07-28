@@ -1,12 +1,10 @@
-import brush from "../assets/brush-down.png";
 import './Footer.css'
 
 const Footer = () => {
     return (
         <>
 
-            <footer className=" justify-center items-center text-white bg-mybgcolor bg-no-repeat" style={{ backgroundImage: `url(${brush})` }} >
-                {/* <div style={{}}></div> */}
+            <footer className=" justify-center items-center text-white bg-mybgcolor-500 bg-no-repeat relative left-0 bottom-0 mt-auto">
                 <div className="container mx-auto py-8 px-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                         <div>

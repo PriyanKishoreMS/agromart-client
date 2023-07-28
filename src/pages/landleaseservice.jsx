@@ -2,11 +2,15 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../hooks/useAuth";
 import { useRef, useState } from "react";
-import firebase from "../components/postfirebase";
+// import firebase from "../components/postfirebase";
 import backgroundImage from '../assets/postingpage.png';
-import 'firebase/compat/storage';
-import Footer from "./Footer";
+// import 'firebase/compat/storage';
+// import Footer from "./Footer";
 import { postLandService } from "../api/usersApi";
+import Footer from "./Footer";
+import "../components/loading.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const LandLeaseService = () => {
     const [errors, setErrors] = useState({
@@ -35,10 +39,12 @@ const LandLeaseService = () => {
         landDesc: "",
         landImage: []
     });
+    
+    const [isLoading, setIsLoading] = useState(false);
 
 	const { user } = useAuth();
 
-    console.log(formData.cropType, formData.cultivationHistory, "Land Register");
+    // console.log(formData.cropType, formData.cultivationHistory, "Land Register");
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -55,7 +61,7 @@ const LandLeaseService = () => {
         }
         else {
             const fieldValue = type === 'checkbox' ? checked : value;
-            console.log("entered2", fieldValue, name);
+            // console.log("entered2", fieldValue, name);
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: fieldValue
@@ -89,21 +95,22 @@ const LandLeaseService = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
+        setIsLoading(true);
         e.preventDefault();
 
-        const storage = firebase.storage();
-        const storageRef = storage.ref('landImage');
-        const imageURLs = [];
+        // const storage = firebase.storage();
+        // const storageRef = storage.ref('landImage');
+        // const imageURLs = [];
 
-        for (const image of formData.landImage) {
-            const imageRef = storageRef.child(image.name);
-            await imageRef.put(image);
-            const imageURL = await imageRef.getDownloadURL();
-            imageURLs.push(imageURL);
-        }
+        // for (const image of formData.landImage) {
+        //     const imageRef = storageRef.child(image.name);
+        //     await imageRef.put(image);
+        //     const imageURL = await imageRef.getDownloadURL();
+        //     imageURLs.push(imageURL);
+        // }
 
         let cultHistory = formData.cultivationHistory.join(',');
-        console.log(cultHistory);
+        // console.log(cultHistory);
 
         const landServiceData = {
             landLocation: formData.landLocation,
@@ -116,10 +123,10 @@ const LandLeaseService = () => {
             waterFacility: formData.waterFacility,
             landPrice: formData.landPrice,
             landDesc: formData.landDesc,
-            // landImage: imageURLs,
+            landImage: formData.landImage,
         };
 
-        console.log("Entered in Screen", landServiceData);
+        // console.log("Entered in Screen", landServiceData);
 
         postLandService(landServiceData);
         // const formDataRef = firebase.database().ref('landLease');
@@ -133,6 +140,7 @@ const LandLeaseService = () => {
         //     .catch((error) => {
         //         console.error('Error saving data to Firebase:', error);
         //     });
+        setIsLoading(false);
     };
 
     const cropTypeoptions = [
@@ -180,6 +188,19 @@ const LandLeaseService = () => {
         'Fruits',
     ];
 
+    if (isLoading) {
+        return <>
+            <Navbar />
+            <div className="loading-container">
+                <div className="loading-content">
+                    <FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
+                    <span>Loading...</span>
+                </div>
+            </div>
+            <Footer />
+        </>
+    }
+
     return (
         <>
             <div className="bg-white bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -194,7 +215,7 @@ const LandLeaseService = () => {
                                 <ul className="text-black">
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor"
+                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +230,7 @@ const LandLeaseService = () => {
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor"
+                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +245,7 @@ const LandLeaseService = () => {
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor"
+                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -239,7 +260,7 @@ const LandLeaseService = () => {
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor"
+                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -258,7 +279,8 @@ const LandLeaseService = () => {
                                 <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
                                     Post Your Land Here
                                 </h2>
-                                <form>
+                                {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
+                                <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (
@@ -343,7 +365,7 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 1 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -464,13 +486,13 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 2 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -533,13 +555,13 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 3 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Preview
@@ -583,13 +605,13 @@ const LandLeaseService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor text-white bg-mybgcolor hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleSubmit}
                                                         >
                                                             Post
@@ -604,8 +626,8 @@ const LandLeaseService = () => {
                         </div>
                     </div>
                 </div >
-                <footer className=" justify-center items-center text-white bg-mybgcolor bg-no-repeat">
-                    {/* <div style={{}}></div> */}
+                <Footer />
+                {/* <footer className=" justify-center items-center text-white bg-mybgcolor-500 bg-no-repeat">
                     <div className="container mx-auto py-8 px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                             <div>
@@ -646,7 +668,7 @@ const LandLeaseService = () => {
                             <p>&copy; 2023 Agroவாங்கோ. All rights reserved.</p>
                         </div>
                     </div>
-                </footer>
+                </footer> */}
             </div >
         </>
     )
