@@ -21,7 +21,9 @@ const Navbar = () => {
     setOpenDropdown(null); // Close all dropdowns
   };
   const navigate = useNavigate();
-  const { user, logOut } = useAuth();
+  const { user, logOut, userDataContent } = useAuth();
+
+  // console.log(userDataContent, "user");
 
   const handleSignOut = async () => {
     try {
@@ -49,20 +51,15 @@ const Navbar = () => {
   // };
 
   return (
-    <nav className="flex flex-wrap items-center justify-between w-full p-6 mb-10 bg-mybgcolor-500 lg:px-20">
-      <div className="flex items-center flex-shrink-0 mr-6 text-white">
+    <nav className="flex z-20 flex-wrap items-center justify-between w-full p-6 mb-10 bg-white  lg:px-20 fixed shadow-md">
+      <div className="flex items-center flex-shrink-0 mr-6 text-black">
         <Link to="/">
-          <img src={logo} className="z-0 mr-2 w-14 h-14 rounded-full" alt="avlogo" />
-        </Link>
-        <Link to="/">
-          <span className="lg:text-xl font-semibold font-serif italic tracking-tight">
-            Agroவாங்கோ
-          </span>
+          <img src={logo} className="z-0 mr-2 w-full h-20" alt="avlogo" />
         </Link>
       </div>
       <div className="block lg:hidden">
         <button
-          className="flex items-center px-3 py-2 text-teal-200 border border-teal-400 rounded hover:text-white hover:border-white"
+          className="flex items-center px-3 py-2 text-primary-200 border border-primary-600 rounded hover:text-black hover:border-white"
           onClick={() => setIsOpen(!isOpen)}
         >
           <svg
@@ -79,29 +76,55 @@ const Navbar = () => {
       </div>
       <div className={`lg:flex-grow ${isOpen ? "block" : "hidden"} w-full lg:flex lg:items-center lg:w-auto`}>
         <div className="text-sm lg:flex-grow">
-          <Link
-            to="/users"
-            className="block mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-yellow-700"
-          >
-            Users
-          </Link>
-          {user?.displayName && (
+          {userDataContent?.userType === 'admin' && (
             <Link
-              to='/profile'
-              className='block mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-yellow-700'
+              to="/users"
+              className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+              style={{ fontFamily: "cursive" }}
+            >
+              Users
+            </Link>
+          )}
+          {userDataContent?.userType === 'admin' ?
+          user?.displayName && (
+            <Link
+              to='/adminProfile'
+              className='block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700'
+              style={{ fontFamily: "cursive" }}
+
             >
               Profile
             </Link>
-          )}
+          )
+            :
+            user?.displayName && (
+              <Link
+                to='/profile'
+                className='block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700'
+                style={{ fontFamily: "cursive" }}
+
+              >
+                Profile
+              </Link>
+            )}
           <Link
-            to="/donate"
-            className="block mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-yellow-700"
+            to="/aboutUs"
+            className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+            style={{ fontFamily: "cursive" }}
           >
-            Donate
+            About Us
+          </Link>
+          <Link
+            to="/ourServices"
+            className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+            style={{ fontFamily: "cursive" }}
+
+          >
+            Our Services
           </Link>
         </div>
 
-        <Dropdown
+        {/* <Dropdown
           title={"For Farmers"}
           items={dropdownFarmers}
           isOpen={openDropdown === "For Farmers"}
@@ -114,11 +137,35 @@ const Navbar = () => {
           isOpen={openDropdown === "More"}
           toggleDropdown={toggleDropdown}
           closeDropdowns={closeDropdowns}
-        />
+        /> */}
+        <Link
+          to="/gallery"
+          className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+          style={{ fontFamily: "cursive" }}
+
+        >
+          Gallery
+        </Link>
+        <Link
+          to="/contactUs"
+          className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+          style={{ fontFamily: "cursive" }}
+
+        >
+          Contact Us
+        </Link>
+        <Link
+          to="/donate"
+          className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+          style={{ fontFamily: "cursive" }}
+
+        >
+          Donate
+        </Link>
         {user?.displayName ? (
           <div className="flex items-center">
             <button
-              className="inline-block px-4 py-2 mt-4 mr-4 text-sm leading-none text-white bg-mybgcolor-500 border border-white rounded hover:border-transparent hover:text-mybgcolor-500 hover:bg-white lg:mt-0"
+              className="inline-block px-4 py-2 mt-4 mr-4 leading-none font-semibold text-lg text-black bg-primary-500 border border-white rounded hover:border-transparent hover:text-primary-500 hover:bg-white lg:mt-0"
               onClick={handleSignOut}
             >
               Log Out
@@ -133,7 +180,7 @@ const Navbar = () => {
           <div>
             <Link
               to="/signin"
-              className="inline-block px-4 py-2 mt-4 text-sm leading-none text-white bg-mybgcolor-500 border border-white rounded hover:border-transparent hover:text-mybgcolor-500 hover:bg-white lg:mt-0"
+              className="inline-block px-4 py-2 mt-4 leading-none font-semibold text-lg text-white bg-primary-500 border border-white rounded hover:border-transparent hover:text-primary-500 hover:bg-white lg:mt-0"
             >
               Sign In
             </Link>

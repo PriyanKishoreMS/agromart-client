@@ -187,12 +187,12 @@ const SellProductService = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div className="p-6 bg-transparent rounded animate-custom">
                                 <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
-                                    Lease/Rent the Property
+                                    Post your Products Here..
                                 </h2>
                                 <ul className="text-black">
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
+                                            className="w-5 h-5 mr-2 text-primary-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -203,11 +203,11 @@ const SellProductService = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        Trustable Owners
+                                        Irresistible Offer: Check Out Our Amazing Products!
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
+                                            className="w-5 h-5 mr-2 text-primary-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -218,11 +218,11 @@ const SellProductService = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        Trustable Dealers
+                                        Quality Meets Affordability: Grab Our Exclusive Deals!
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
+                                            className="w-5 h-5 mr-2 text-primary-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -233,11 +233,11 @@ const SellProductService = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        You can easily Lease the Land.
+                                        Unveil the Beauty: Find Your Perfect Product Here!
                                     </li>
                                     <li className="mb-2 flex items-center">
                                         <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
+                                            className="w-5 h-5 mr-2 text-primary-500"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +248,7 @@ const SellProductService = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        Agroவாங்கோ one of the most trustable Platform
+                                        Your One-Stop Shop: Find Everything You Need Right Here!
                                     </li>
                                 </ul>
                             </div>
@@ -341,7 +341,7 @@ const SellProductService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -403,13 +403,13 @@ const SellProductService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Preview
@@ -447,13 +447,13 @@ const SellProductService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
                                                             onClick={handleSubmit}
                                                         >
                                                             Post
@@ -469,7 +469,7 @@ const SellProductService = () => {
                     </div>
                 </div >
                 <Footer />
-                {/* <footer className=" justify-center items-center text-white bg-mybgcolor-500 bg-no-repeat">
+                {/* <footer className=" justify-center items-center text-white bg-primary-500 bg-no-repeat">
                     <div className="container mx-auto py-8 px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                             <div>

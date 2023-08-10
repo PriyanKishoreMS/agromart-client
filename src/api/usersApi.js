@@ -1,11 +1,40 @@
 import axios from "axios";
+// import { useAuth } from "../hooks/useAuth";
+
 const ENDPOINT_URL = "https://agromart-dev.onrender.com/api";
 // const ENDPOINT_URL = "http://localhost:3000/api";
+
+
 
 export const createUser = async userData => {
 	try {
 		const response = await axios.post(`${ENDPOINT_URL}/postUser`, userData);
+
+		// const { updateUserData } = useAuth();
+		
 		localStorage.setItem("token", response.data.token);
+		console.log(response.data, "tokennnnnnnn");
+		// updateUserData(response.data.user);
+
+		return response.data
+	} catch (err) {
+		console.error({ Message: "Error posting user data", Error: err });
+	}
+};
+
+export const updateUser = async (id, updateduserData) => {
+	// console.log(updateduserData, "updateduserData");
+	try {
+		// const { name, userType } = updateduserData;
+		// // console.log();
+		// const updatedData = new FormData();
+		// updatedData.append('name', name);
+		// updatedData.append('userType', userType);
+		const response = await axios.put(`${ENDPOINT_URL}/updateUser/${id}`, updateduserData, {
+			headers: {
+				"auth-token": localStorage.getItem("token")
+			},
+		});
 		console.log(response.data, "tokennnnnnnn");
 	} catch (err) {
 		console.error({ Message: "Error posting user data", Error: err });
@@ -14,16 +43,36 @@ export const createUser = async userData => {
 
 export const getUsers = async () => {
 	try {
-		const response = await axios.get(`${ENDPOINT_URL}/getUser`);
+		const response = await axios.get(`${ENDPOINT_URL}/getUser`, {
+			headers: {
+				"auth-token": localStorage.getItem("token")
+			},
+		});
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting user data", Error: err });
 	}
 };
 
-export const getLandServices = async () => {
+// export const getLandServices = async () => {
+// 	try {
+// 		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
+// 			headers: {
+// 				"auth-token": localStorage.getItem("token"),
+// 			},
+// 		});
+// 		return response.data;
+// 	} catch (err) {
+// 		console.error({ Message: "Error getting land data", Error: err });
+// 	}
+// };
+
+export const getMyLandServices = async (id) => {
 	try {
-		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
+		// console.log("Pages", page);
+		const limit = 50;
+		// const skip = page * limit;
+		const response = await axios.get(`${ENDPOINT_URL}/userLands/${id}`, {
 			headers: {
 				"auth-token": localStorage.getItem("token"),
 			},
@@ -34,6 +83,7 @@ export const getLandServices = async () => {
 	}
 };
 
+
 export const getFilteredLandServices = async (search, page) => {
 	try {
 		console.log("Pages", page);
@@ -41,13 +91,15 @@ export const getFilteredLandServices = async (search, page) => {
 		// const skip = page * limit;
 		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
 			params: {
-				page: page, 
-				limit: limit, 
-				search: search},
+				page: page,
+				limit: limit,
+				search: search
+			},
 			headers: {
 				"auth-token": localStorage.getItem("token"),
 			},
 		});
+		// let landData = response.data;
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting land data", Error: err });
@@ -131,6 +183,7 @@ export const getProduct = async () => {
 				"auth-token": localStorage.getItem("token"),
 			},
 		});
+		console.log("response", response.data);
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting land data", Error: err });

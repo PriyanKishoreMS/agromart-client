@@ -104,14 +104,12 @@ const SellProductDashboard = () => {
   };
 
   if (isLoading) {
-    return <>
+    return (
       <div className="loading-container">
-        <div className="loading-content">
-          <FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
-          <span>Loading...</span>
-        </div>
-      </div>
-    </>
+			<FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
+			<span className="loading-text">Loading...</span>
+		  </div>
+    )
   }
 
   return (
@@ -135,8 +133,8 @@ const SellProductDashboard = () => {
                     item.productImage.map((imageUrl, imgIndex) => (
                       <div key={imgIndex} className="carousel-image">
                         <img
-                          // src={`https://agromart-dev.onrender.com/${imageUrl}`} 
-                          src={`http://localhost:3000/${imageUrl}`}
+                          src={`https://agromart-dev.onrender.com/${imageUrl}`} 
+                          // src={`http://localhost:3000/${imageUrl}`}
                           alt={`Image ${imgIndex + 1}`}
                           className="max-w-full container mb-2"
                           style={{ width: '500px', height: '250px' }} // Set the desired height here
@@ -153,7 +151,7 @@ const SellProductDashboard = () => {
                 </Carousel>
               </div>
               <div
-                className="bg-mybgcolor-500 rounded-3xl items-center justify-center  text-center border border-mybgcolor-500 pl-2 text-white w-full h-12"
+                className="bg-primary-500 rounded-3xl items-center justify-center  text-center border border-primary-500 pl-2 text-white w-full h-12"
                 onClick={() => handleDetailClick(item, index)}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}

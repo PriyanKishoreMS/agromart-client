@@ -12,6 +12,13 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
+	const [userDataContent, setUserDataContent] = useState(null);
+
+	// const updateUserData = (newUserData) => {
+	// 	console.log(newUserData, "newUserData");
+	// 	setUserData(newUserData);
+	// };
+
 	const googleSignIn = () => {
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider);
@@ -21,13 +28,14 @@ export const AuthContextProvider = ({ children }) => {
 		try {
 			await signOut(auth);
 			localStorage.removeItem("token");
+			setUserDataContent(null);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, currentUser => {
+		const unsubscribe = onAuthStateChanged(auth, async(currentUser) => {
 			setUser(currentUser);
 			if (currentUser) {
 				const userData = {
@@ -36,7 +44,9 @@ export const AuthContextProvider = ({ children }) => {
 					name: currentUser.displayName,
 					photoURL: currentUser.photoURL,
 				};
-				createUser(userData);
+				const userContent = await createUser(userData);
+				console.log(userContent.user, "userContent");
+				setUserDataContent(userContent.user);
 			}
 		});
 		return () => {
@@ -45,7 +55,7 @@ export const AuthContextProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ googleSignIn, logOut, user }}>
+		<AuthContext.Provider value={{ googleSignIn, logOut, user, userDataContent }}>
 			{children}
 		</AuthContext.Provider>
 	);

@@ -6,13 +6,16 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import "../components/loading.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const Users = () => {
 	const { isError, isLoading, isSuccess, data, error } = useQuery(
 		["users"],
 		getUsers
 	);
+	
+
+	console.log(data, "dataaaa");
 
 	const navigate = useNavigate();
 
@@ -30,53 +33,65 @@ const Users = () => {
 		navigate('/workinprogress');
 	}
 
-	if (isLoading) {
-		return <div className="loading-container">
-			<div className="loading-content">
-				<FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
-				<span>Loading...</span>
-			</div>
-		</div>
+	const handleUserEdit = (data) => {
+		navigate(`/updateUser/`, { state: { data } });
 	}
+
+	if (isLoading) {
+		return (
+		  <div className="loading-container">
+			<FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
+			<span className="loading-text">Loading...</span>
+		  </div>
+		);
+	  }	
 
 	return (
 		<>
 			<div className="flex flex-col min-h-screen">
 				<Navbar />
-				<div className="mt-8 overflow-x-auto">
-					<div className="w-full overflow-hidden">
-						<table className="w-full border-collapse">
-							<thead>
-								<tr className="bg-slate-200">
-									<th className="p-4 text-left font-semibold">Name</th>
-									<th className="p-4 text-left font-semibold">Email</th>
-									<th className="p-4 text-left font-semibold">Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								{data &&
-									data.user.map(user => (
-										<tr key={user.id} className="bg-white">
-											<td className="p-4">{user.name}</td>
-											<td className="p-4">{user.email}</td>
-											<td className="p-4">
-												<button
-													// onClick={handleUserEdit}
-													className="px-3 py-1 rounded-md bg-mybgcolor-500 text-white hover:bg-yellow-700"
-												>
-													Edit
-												</button>
-												<button
-													// onClick={handleUserDelete}
-													className="px-3 py-1 ml-2 rounded-md bg-red-500 text-white hover:bg-red-600"
-												>
-													Delete
-												</button>
-											</td>
-										</tr>
-									))}
-							</tbody>
-						</table>
+				<div className="mt-8 pt-32 overflow-x-auto">
+					<div className="w-full overflow-hidden grid md:grid-cols-2 gap-4">
+						{data &&
+							data.user.map((user) => (
+								<div className="vh-10" key={user.uid}>
+									<div className="container mx-auto">
+										<div className="flex justify-center">
+											<div className="mt-5 mb-5 md:w-9/12 lg:w-7/12 xl:w-5/12">
+												<div className="bg-white rounded-lg shadow-lg p-4 -mr-20">
+													<div className="flex text-black">
+														<div className="flex-shrink-0">
+															<img
+																className="w-28 h-28 rounded-full"
+																src={user?.photoURL}
+																alt="Profile"
+															/>
+														</div>
+														<div className="flex-grow-1 ms-3">
+															<h2 className="text-xl font-semibold">{user?.name}</h2>
+															<div className="flex rounded-md bg-gray-300 p-2 mb-2">
+																<div className="mr-4">
+																	<p className="text-sm text-gray-500 mb-1">Lands Posted</p>
+																	<p className="text-lg font-semibold">0</p>
+																</div>
+																<div className="px-4">
+																	<p className="text-sm text-gray-500 mb-1">Products Posted</p>
+																	<p className="text-lg font-semibold">0</p>
+																</div>
+															</div>
+															<div className="flex justify-end">
+																<button onClick={() => handleUserEdit(user)} className="text-primary-500 hover:text-primary-700">
+																	<FontAwesomeIcon icon={faEdit} />
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							))}
 					</div>
 				</div>
 				<Footer />

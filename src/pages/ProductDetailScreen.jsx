@@ -20,7 +20,7 @@ const ProductDetailScreen = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-wrap min-h-screen">
+            <div className="flex flex-wrap min-h-screen pt-32">
                 <div className="w-full md:w-1/2 lg:w-1/4">
                     <div className="lg:mt-4">
                         <Carousel
@@ -72,11 +72,11 @@ const ProductDetailScreen = () => {
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-3/4 lg:pl-4">
-                    <div className="bg-yellow-50 rounded-lg shadow-lg p-6">
-                        <h2 className="text-xl font-semibold mb-2">Product Name: <a className='text-yellow-700 font-serif italic'>{data.productName}</a></h2>
+                    <div className="bg-white rounded-lg shadow-lg p-6">
+                        <h2 className="text-xl font-semibold mb-2">Product Name: <a className='text-primary-700 font-serif italic'>{data.productName}</a></h2>
                         <p>
-                            We have a remarkable product available for sale. Our <a className='text-yellow-700 font-bold'>{data.productName}</a>, belonging to the <a className='text-yellow-700 font-bold'>{data.productCategory}</a> category, is manufactured by{' '}
-                            <a className='text-yellow-700 font-bold'>{data.productManufacturer}</a> to ensure top-notch quality. This exceptional product is offered at an unbeatable price of <a className='text-yellow-700 font-bold'>{data.productPrice}</a>. We have an
+                            We have a remarkable product available for sale. Our <a className='text-primary-700 font-bold'>{data.productName}</a>, belonging to the <a className='text-primary-700 font-bold'>{data.productCategory}</a> category, is manufactured by{' '}
+                            <a className='text-primary-700 font-bold'>{data.productManufacturer}</a> to ensure top-notch quality. This exceptional product is offered at an unbeatable price of <a className='text-primary-700 font-bold'>{data.productPrice}</a>. We have an
                             abundant quantity available, so you can purchase as per your requirements. Don't miss out on this opportunity to acquire an outstanding product that
                             guarantees satisfaction and value for your investment.
                         </p>
@@ -87,10 +87,10 @@ const ProductDetailScreen = () => {
                             <strong>Product Description:</strong> {data.productDescription}
                         </p>
                         <div className="flex justify-end mt-4">
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded mr-2">
+                            <button onClick={handleworkinprogress} className="bg-primary-500 text-white py-2 px-4 rounded mr-2">
                                 Add to Cart
                             </button>
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded">
+                            <button onClick={handleworkinprogress} className="bg-primary-500 text-white py-2 px-4 rounded">
                                 Buy Now
                             </button>
                         </div>

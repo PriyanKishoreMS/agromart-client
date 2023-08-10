@@ -10,7 +10,7 @@ import { postLandService } from "../api/usersApi";
 import Footer from "./Footer";
 import "../components/loading.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const LandLeaseService = () => {
     const [errors, setErrors] = useState({
@@ -39,10 +39,10 @@ const LandLeaseService = () => {
         landDesc: "",
         landImage: []
     });
-    
+
     const [isLoading, setIsLoading] = useState(false);
 
-	const { user } = useAuth();
+    const { user } = useAuth();
 
     // console.log(formData.cropType, formData.cultivationHistory, "Land Register");
 
@@ -128,7 +128,8 @@ const LandLeaseService = () => {
 
         // console.log("Entered in Screen", landServiceData);
 
-        postLandService(landServiceData);
+        await postLandService(landServiceData);
+        navigate('/profile');
         // const formDataRef = firebase.database().ref('landLease');
         // formDataRef
         //     .push(newData)
@@ -205,79 +206,43 @@ const LandLeaseService = () => {
         <>
             <div className="bg-white bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
                 <Navbar />
-                <div className="max-w-6xl mx-auto rounded-lg shadow-lg bg-transparent">
+                <div className="max-w-6xl mx-auto rounded-lg shadow-lg bg-transparent pt-36">
                     <div className="container mx-auto px-4 lg:px-0 py-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                            <div className="p-6 bg-transparent rounded animate-custom">
-                                <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
-                                    Lease/Rent the Property
+                            <div className="p-6 bg-transparent rounded animate-custom -mt-12">
+                                <h2 className="mb-4 text-2xl font-semibold text-primary-300">
+                                    Tender the Property
                                 </h2>
-                                <ul className="text-black">
-                                    <li className="mb-2 flex items-center">
-                                        <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2.05-7.05a1 1 0 010-1.41l4-4a1 1 0 111.42 1.42l-4 4a1 1 0 01-1.42 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        Trustable Owners
+                                <ul className="text-primary-700">
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Unleash the Potential: Tender this Spectacular Property Today!
                                     </li>
-                                    <li className="mb-2 flex items-center">
-                                        <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2.05-7.05a1 1 0 010-1.41l4-4a1 1 0 111.42 1.42l-4 4a1 1 0 01-1.42 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        Trustable Dealers
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Discover Your Dream Space: Bid for this Prime Property Now!
                                     </li>
-                                    <li className="mb-2 flex items-center">
-                                        <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2.05-7.05a1 1 0 010-1.41l4-4a1 1 0 111.42 1.42l-4 4a1 1 0 01-1.42 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        You can easily Lease the Land.
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Investment Opportunity Knocking: Tender this Hidden Gem!
                                     </li>
-                                    <li className="mb-2 flex items-center">
-                                        <svg
-                                            className="w-5 h-5 mr-2 text-mybgcolor-500"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-2.05-7.05a1 1 0 010-1.41l4-4a1 1 0 111.42 1.42l-4 4a1 1 0 01-1.42 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        Agroவாங்கோ one of the most trustable Platform
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Calling All Visionaries: Secure Your Future with this Land!
+                                    </li>
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Rare Opportunity Awaits: Tender this Exclusive Property!
+                                    </li>
+                                    <li className="mb-4 flex items-center">
+                                        <FontAwesomeIcon icon={faCheck} className="w-6 h-6 text-primary-500 mr-3" />
+                                        Make Your Mark: Tender the Key to Your New Beginning!
                                     </li>
                                 </ul>
                             </div>
-                            <div className="p-6 bg-yellow-50 rounded animate-custom">
-                                <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
-                                    Post Your Land Here
+                            <div className="p-6 bg-white rounded animate-custom">
+                                <h2 className="mb-4 text-2xl font-semibold text-primary-700">
+                                    Post Your Tender Here
                                 </h2>
                                 {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
                                 <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
@@ -365,7 +330,7 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 1 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -416,7 +381,7 @@ const LandLeaseService = () => {
                                                                         checked={formData.cultivationHistory.includes(option)}
                                                                         onChange={handleCheckboxChange}
                                                                     />
-                                                                    <label htmlFor={option}>{option}</label>
+                                                                    <label className="text-black ml-1" htmlFor={option}>{option}</label>
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -486,13 +451,13 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 2 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -555,13 +520,13 @@ const LandLeaseService = () => {
                                                     {/* Add more fields here for Page 3 */}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Preview
@@ -570,7 +535,7 @@ const LandLeaseService = () => {
                                                 </div>
                                             )}
                                             {currentPage === 4 && (
-                                                <div>
+                                                <div className="bg-green-100 p-2 rounded">
                                                     <h1 className="text-2xl font-bold mb-4">Confirm the Details:</h1>
                                                     {/* Display the form data for preview */}
                                                     <div className="mb-4">
@@ -605,13 +570,13 @@ const LandLeaseService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleSubmit}
                                                         >
                                                             Post
@@ -627,7 +592,7 @@ const LandLeaseService = () => {
                     </div>
                 </div >
                 <Footer />
-                {/* <footer className=" justify-center items-center text-white bg-mybgcolor-500 bg-no-repeat">
+                {/* <footer className=" justify-center items-center text-black bg-primary-500 bg-no-repeat">
                     <div className="container mx-auto py-8 px-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                             <div>

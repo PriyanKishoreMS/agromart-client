@@ -205,7 +205,7 @@ const Registration = () => {
                             <div ref={recaptchaRef}></div>
                             <button
                                 onClick={sendOTP}
-                                className="bg-mybgcolor-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                                className="bg-primary-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                             >
                                 Send OTP
                             </button>
@@ -223,7 +223,7 @@ const Registration = () => {
                                 />
                                 <button
                                     onClick={verifyOTP}
-                                    className="bg-mybgcolor-500 mt-2 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                                    className="bg-primary-500 mt-2 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                                 >
                                     Verify OTP
                                 </button>
@@ -231,7 +231,7 @@ const Registration = () => {
                         )}
                         <button
                             type="submit"
-                            className="bg-mybgcolor-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
+                            className="bg-primary-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700"
                         >
                             Register
                         </button>

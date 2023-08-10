@@ -10,15 +10,31 @@ import agribg2 from '../assets/bg/Agribg.jpeg';
 import agribg3 from '../assets/bg/Agribg3.jpg';
 import agribg4 from '../assets/bg/Agribg4.jpg';
 import agribg5 from '../assets/bg/Agribg5.jpg';
+import permaculture from '../assets/permaculture.jpg';
+import honeybee from '../assets/honeybee.mp4';
+import question from '../assets/qustion.png';
+import agriculture from '../assets/agriculture.jpg';
+import whatsappicon from '../assets/whatsappicon.jpg';
 import { useEffect, useState } from "react";
 import './Home.css';
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+import ImageSlider from "../components/ImageSlider";
+import QuoteSlider from "../components/QuoteSlider";
+
 
 const Home = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [showButton, setShowButton] = useState(false);
+	const [showButton, setShowButton] = useState(false); const [currentPara, setCurrentPara] = useState(0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setCurrentPara((prevPara) => (prevPara + 1) % 4); // 4 is the total number of paragraphs
+		}, 6000); // 6000ms = 6 seconds (3 seconds for fadeIn + 3 seconds for fadeOut)
+
+		return () => clearInterval(interval);
+	}, []);
 
 	const navigate = useNavigate();
 
@@ -81,6 +97,19 @@ const Home = () => {
 		window.location.href = 'https://www.renature.co/articles/long-term-investment-unlocks-agricultural-profit/';
 	}
 
+	const quotes = [
+		"A boon for the earth",
+		"The farmer has to be an optimist or he wouldn't still be a farmer. – Will Rogers",
+		"The nation that destroys its soil destroys itself. – Franklin D. Roosevelt",
+		"Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth, good morals, and happiness. – Thomas Jefferson",
+		"Farming is a profession of hope. – Brian Brett",
+		"In every conceivable manner, the family is link to our past, bridge to our future. – Alex Haley",
+		"The best fertilizer is the farmer's shadow."
+		// Add more quotes here
+	];
+
+	// const images = ['Agribg.jpg', 'Agribg2.jpeg', 'Agribg3.jpg', 'Agribg4.jpg', 'Agribg5.jpg']
+
 
 	if (isLoading) {
 		return <div className="loading-container">
@@ -93,26 +122,30 @@ const Home = () => {
 
 	return (
 		<>
-			<div className="bg-white">
+			<div className="bg-black">
 				<Navbar />
-				<div className="bg-white pb-0 min-h-screen flex flex-col md:flex-row">
+				<div className="bg-black pt-28 pb-0 min-h-screen flex flex-col md:flex-row">
 					<div className="container px-4 my-8 mx-auto bg-fixed bg-auto bg-right md:w-1/2">
 						<div className="bg-cover bg-center flex justify-center items-center transition-opacity duration-1000">
-							<h1 className={`lg:text-4xl md:text-3xl mb-8 text-2xl font-bold text-center text-mybgcolor-500	 animate-fade-in`}>
+							<h1 className={`lg:text-4xl md:text-3xl mb-8 text-2xl font-bold text-center text-primary-500	 animate-fade-in`}>
 								Welcome to
-								<h2 className="text-4xl font-bold text-mybgcolor-500 font-serif italic">Agroவாங்கோ</h2>
+
+								<h2 className="text-4xl font-bold text-primary-500 font-serif italic">Agro Edu Vaango</h2>
+								{/* <a href="https://fontmeme.com/tamil/">
+									<img className="h-10 w-40" src="https://fontmeme.com/permalink/230803/a88b4ff76703e7840aa5ad0393f1df3e.png" alt="tamil" border="0" />
+								</a> */}
 								{/* <p>Agroவாங்கோ</p> */}
 							</h1>
 						</div>
 						<div className="mt-20 px-5 justify-center items-center text-center"> {/* Added text-center class */}
 							<div className="lg:mx-12 lg:px-4 sm:px-1 sm:mx-4">
-								<h1 className="text-black font-bold text-center lg:text-5xl sm:text-sm font-serif"> {/* Added text-center class */}
+								<h1 className="text-white font-bold text-center lg:text-5xl sm:text-sm font-serif"> {/* Added text-center class */}
 									A single step taken forward will pave the way for thousands to follow!
 								</h1>
-								<p className="text-slate-800 mt-5 text-center">
+								<p className="text-slate-300 mt-5 text-center">
 									Company provides farmers, ranchers, private foresters, and agricultural producers with online self-service applications and educational materials.
 								</p>
-								<button onClick={handleSignin} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white px-4 py-3  outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform mx-5 flex">
+								<button onClick={handleSignin} className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black px-4 py-3  outline-none focus:ring-4 shadow-lg transform active:scale-x-75 transition-transform mx-5 flex">
 									Register Now
 								</button>
 							</div>
@@ -120,15 +153,16 @@ const Home = () => {
 					</div>
 					<div className="w-full md:w-1/2 bg-cover bg-no-repeat bg-right md:bg-center md:flex md:items-center" style={{ backgroundImage: `url(${backgroundImage})` }}></div>
 				</div>
-				<div className="bg-white pb-12 lg:pt-20 justify-center items-center bg-no-repeat bg-cover">
+				<ImageSlider />
+				<div className="bg-black pb-12 lg:pt-20 justify-center items-center bg-no-repeat bg-cover">
 					<div>
-						<h2 className="text-center text-4xl mt-10 font-bold text-black">New Opportunities</h2>
-						<p className="text-center mt-8 mb-10 sm:px-4 lg:px-72 text-black text-xl">We are the first and the only crowdfunding platform enabling you to help finance our farmers.</p>
+						<h2 className="text-center text-4xl mt-10 font-bold text-white">New Opportunities</h2>
+						<p className="text-center mt-8 mb-10 sm:px-4 lg:px-72 text-white text-xl">We are the first and the only crowdfunding platform enabling you to help finance our farmers.</p>
 					</div>
 					<div className="container mx-auto pt-0">
 						<div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
 							<div className="p-6 sm:p-10 py-20 sm:py-28 transition-all duration-150 ease-in-out bg-slate-100 rounded shadow hover:shadow-2xl bg-cover" style={{ backgroundImage: `url(${agribg4})` }}>
-								<h2 className="mb-4 text-2xl font-bold text-yellow-700">
+								<h2 className="mb-4 text-2xl font-bold text-primary-700">
 									Connect with our farmers and Land Holders
 								</h2>
 								<p className="mb-4 text-white">
@@ -137,7 +171,7 @@ const Home = () => {
 							</div>
 
 							<div className="p-6 sm:p-10 py-20 sm:py-28 transition-all duration-150 ease-in-out bg-slate-100 rounded shadow hover:shadow-2xl bg-cover" style={{ backgroundImage: `url(${agribg3})` }}>
-								<h2 className="mb-4 text-2xl font-bold text-yellow-700">
+								<h2 className="mb-4 text-2xl font-bold text-primary-700">
 									Grow your business
 								</h2>
 								<p className="mb-4 text-gray-700">
@@ -146,7 +180,7 @@ const Home = () => {
 							</div>
 
 							<div className="p-6 sm:p-10 py-20 sm:py-28 transition-all duration-150 ease-in-out bg-slate-100 rounded shadow hover:shadow-2xl bg-cover" style={{ backgroundImage: `url(${agribg5})` }}>
-								<h2 className="mb-4 text-2xl font-bold text-yellow-700">
+								<h2 className="mb-4 text-2xl font-bold text-primary-700">
 									Social Impact Investment
 								</h2>
 								<p className="mb-4 text-white">
@@ -156,9 +190,106 @@ const Home = () => {
 						</div>
 					</div>
 				</div>
-				<div className="pt-16 justify-center items-center bg-white bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg1})` }}>
+				<div className="flex flex-col md:flex-row mt-10">
+					<div className="w-full md:w-1/2 p-4">
+						<div className="flex items-center mb-4">
+							<h2 className="text-5xl text-primary-700 mr-2">Why Agriculture</h2>
+							<img src={question} className="w-12 h-12 rounded-full" alt="Question mark" />
+						</div>
+						<p className="text-xl text-justify text-slate-200">
+							Agriculture, the silent symphony of sustenance, beckons us with its primal rhythm.
+							It's the art of coaxing life from soil's embrace, a tapestry that weaves communities, nourishes nations,
+							and reverberates through generations. From the seed's hopeful embrace of earth to the table's final feast,
+							agriculture is the heartbeat of existence, a dance that harmonizes humanity and nature.
+							Agriculture is the universal bridge that spans time and cultures, reminding us that our story is rooted in the soil and intertwined with every meal shared.
+							In the end, agriculture isn't just about what we grow; it's about who we are and the legacy we nurture.
+						</p>
+					</div>
+					<div className="w-full md:w-1/2 mt-4 md:mt-0">
+						<img src={agriculture} className="w-full h-auto md:h-3/4 px-4 md:px-10 rounded-xl" alt="Agriculture" />
+					</div>
+				</div>
+				{/* It's the promise of abundance,
+						the stewardship of the land, and the resilience that propels societies forward. Beyond economics, it's a cultural compass,
+						shaping traditions and uniting diverse voices under the banner of food. In fields that stretch to the horizon,
+						we witness innovation blooming, as science and heart intertwine to tackle our world's challenges. */}
+				<div className="bg-black bg-no-repeat bg-cover">
+					<h1 class="text-4xl font-semibold text-center mb-12 text-primary-700 pt-10" style={{ fontFamily: 'cursive' }}>Bond between Honeybee & Agriculture</h1>
+					<div className="container mx-auto px-4 py-8 flex flex-col md:flex-row">
+						<div className="flex-1">
+							<div className="">
+								<div className={`text-lg ${currentPara === 0 ? 'fade-in-out' : 'hidden'}`}>
+									<h2 className="text-2xl font-semibold mb-4 text-primary-700">Invisible Warriors of Agriculture</h2>
+									<p className="text-justify px-4 text-white">
+										Honey bees are the secret to flourishing crops and bountiful harvests. With their delicate yet
+										powerful dance of pollination, they unlock nature's bounty, ensuring juicy fruits, luscious
+										vegetables, and abundant seeds.
+									</p>
+									<h2 className="text-2xl font-semibold mt-4 mb-4 text-primary-700">Pollination</h2>
+									<p className="text-justify px-4 text-white">
+										Honey bees are efficient pollinators, transferring pollen from one flower to another while foraging for nectar.
+										This process helps plants produce fruits, vegetables, and seeds.
+										It is estimated that honey bees are responsible for pollinating about one-third of the world's food crops,
+										including various fruits, nuts, and vegetables.
+									</p>
+								</div>
+
+								<div className={`text-lg ${currentPara === 1 ? 'fade-in-out' : 'hidden'}`}>
+									<h2 className="text-2xl font-semibold mb-4 text-primary-700">A Symphony of Life</h2>
+									<p className="text-justify px-4 text-white">
+										Honey bees orchestrate the harmony of ecosystems, pollinating wildflowers and crops alike. Their
+										tireless work sustains biodiversity, creating a vibrant tapestry of life in fields and meadows.
+									</p>
+									<h2 className="text-2xl font-semibold mt-4 mb-4 text-primary-700">Conservation Efforts</h2>
+									<p className="text-justify px-4 text-white">
+										Recognizing the importance of honey bees in agriculture, efforts to conserve and
+										protect bee populations have gained prominence. Farmers, beekeepers, and policymakers work together
+										to promote bee-friendly practices and habitat preservation.
+									</p>
+								</div>
+
+								<div className={`text-lg ${currentPara === 2 ? 'fade-in-out' : 'hidden'}`}>
+									<h2 className="text-2xl font-semibold mb-4 text-primary-700">Crop Yield and Quality</h2>
+									<p className="text-justify px-4 text-white">
+										Honey bee pollination significantly enhances crop yield and quality.
+										When crops receive adequate pollination, they produce larger, healthier, and more uniform fruits and seeds.
+										This, in turn, improves the market value and profitability of agricultural produce.
+									</p>
+									<h2 className="text-2xl font-semibold mt-4 mb-4 text-primary-700">Beyond Sweetness</h2>
+									<p className="text-justify px-4 text-white">
+										The buzz of honey bees goes beyond producing golden nectar. They safeguard our food security,
+										driving economic prosperity and empowering sustainable farming practices.
+									</p>
+								</div>
+
+								<div className={`text-lg ${currentPara === 3 ? 'fade-in-out' : 'hidden'}`}>
+									<h2 className="text-2xl font-semibold mb-4 text-primary-700">Guardians of Tomorrow</h2>
+									<p className="text-justify px-4 text-white">
+										In a world of challenges, honey bees remind us of our interdependence with nature. Their
+										conservation is a testament to our collective responsibility in nurturing a thriving planet.
+									</p>
+									<h2 className="text-2xl font-semibold mt-4 mb-4 text-primary-700">Economic Impact</h2>
+									<p className="text-justify px-4 text-white">
+										The honey bee-agriculture bond also has significant economic implications.
+										By supporting pollination services, the honey bee industry contributes billions of dollars
+										to the global economy each year.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="flex-1">
+							<div className="relative h-full">
+								<video autoPlay loop muted className="w-full h-full">
+									<source src={honeybee} type="video/mp4" />
+									{/* Your browser does not support the video tag. */}
+								</video>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/* <div className="pt-16 justify-center items-center bg-black bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg1})` }}>
 					<div>
-						<h1 className="mb-4 lg:text-4xl sm:text-2xl font-bold text-yellow-700 px-4 sm:pl-10">
+						<h1 className="mb-4 lg:text-4xl sm:text-2xl font-bold text-primary-700 px-4 sm:pl-10">
 							Invest on your convenience
 						</h1>
 						<p className="mt-10 lg:text-xl text-white lg:w-1/2 px-4 sm:pl-10">
@@ -172,36 +303,77 @@ const Home = () => {
 						<div className="container mx-auto px-4 lg:px-72 py-8">
 							<div className="grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2">
 								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest1})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor-500">
+									<h2 className="mb-4 text-2xl font-semibold text-primary-500">
 										New Farm Today
 									</h2>
 									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Short-term investment</h1>
 									<p className="text-white">
 										Invest in farms that will be ready for harvest in 3-18 months
 									</p>
-									<button onClick={handlebrowsefarm} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">Browse Farm</button>
+									<button onClick={handlebrowsefarm} className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">Browse Farm</button>
 								</div>
 								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest2})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-mybgcolor-500">
+									<h2 className="mb-4 text-2xl font-semibold text-primary-500">
 										Fully Funded
 									</h2>
 									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Long-term investment</h1>
 									<p className="text-white">
 										Consider farms that have a long-term investment program
 									</p>
-									<button onClick={handlelearnmore} className="border-2 mt-4 p-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">Learn more</button>
+									<button onClick={handlelearnmore} className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">Learn more</button>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div> */}
+				<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${permaculture})` }}>
+					<h1 class="text-4xl font-bold text-center mb-12 text-primary-700">Welcome to Permaculture</h1>
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Sustainability</h2>
+							<p class="text-white">Permaculture promotes sustainable practices by working with nature rather than against it, ensuring long-term viability.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Regenerative Agriculture</h2>
+							<p class="text-white">It focuses on regenerating the soil and natural ecosystems, leading to improved soil health and fertility.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Biodiversity</h2>
+							<p class="text-white">Permaculture encourages the cultivation of diverse plant and animal species, enhancing ecosystem resilience.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Water Conservation</h2>
+							<p class="text-white">It emphasizes the efficient use and management of water resources, reducing waste and enhancing water quality.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Energy Efficiency</h2>
+							<p class="text-white">Permaculture design seeks to minimize energy inputs and optimize energy outputs in various systems.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Local Food Production</h2>
+							<p class="text-white">Permaculture encourages the cultivation of food locally, reducing the dependence on distant supply chains.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Community Engagement</h2>
+							<p class="text-white">Permaculture often fosters a strong sense of community, as it encourages cooperation and sharing of resources.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Waste Reduction</h2>
+							<p class="text-white">Permaculture systems aim to minimize waste by reusing and recycling materials within the ecosystem.</p>
+						</div>
+						<div class="bg-black p-6 rounded-lg shadow-md">
+							<h2 class="text-xl font-semibold mb-2 text-primary-500">Climate Change Mitigation</h2>
+							<p class="text-white">By sequestering carbon through tree planting and sustainable land management, permaculture can help combat climate change.</p>
+						</div>
+					</div>
 				</div>
-				<div className="justify-center pt-10 items-center pb-20 bg-yellow-50 bg-no-repeat bg-cover">
-					<div className="mx-8 md:mx-48 pb-16 bg-mybgcolor-500 border pt-12 bg-cover relative">
+				<div className="justify-center pt-10 items-center pb-20 bg-black bg-no-repeat bg-cover">
+					<div className="mx-8 md:mx-48 pb-16 bg-primary-700 border border-primary-700 pt-12 bg-cover relative">
 						<h1 className="mb-4 text-center lg:text-4xl sm:text-2xl font-bold text-white pl-4 md:pl-10">How it works</h1>
 						<p className="text-white text-center text-xl md:text-2xl mx-4 md:mx-48">
 							Take lands based on your requirements. We provide you affordable options.
 						</p>
-						<div className="grid grid-cols-1 md:grid-cols-2 px-4 md:px-5 py-8 border-2 border-mybgcolor-500 mx-4 md:mx-48 mt-10 transition-all duration-150 ease-in-out rounded-xl shadow-lg">
+						<div className="grid grid-cols-1 md:grid-cols-2 px-4 md:px-5 py-8 border-2 border-primary-700 mx-4 md:mx-48 mt-10 transition-all duration-150 ease-in-out rounded-xl shadow-lg">
 							<div>
 								<p className="mb-4 text-center lg:text-3xl sm:text-sm font-bold text-white">
 									Select your farmshare and complete the reservation form.
@@ -215,76 +387,65 @@ const Home = () => {
 						</div>
 					</div>
 				</div>
-				<div className="justify-center items-center bg-white py-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg2})` }}>
-					<div className="grid grid-cols-1 mt-10 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
-							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof1} className="w-1/4 h-1/3 z-0 " alt="Profile 1" />
-								<div className="flex-grow">
-									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
-										Mr. Singh
-									</h2>
-									<p className="mb-4 text-gray-700">
-										Telecommunication Engineer
-									</p>
-								</div>
-							</div>
+				{/* <div className="justify-center items-center bg-black py-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg2})` }}>
+					<div className="">
+						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-transparent rounded shadow animate-fade-in">
 							<div>
-								<p className="text-justify px-6 text-rose-950 text-2xl animate-pulse">"A boon for the earth"</p>
-							</div>
-						</div>
-						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
-							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof2} className="w-1/4 h-1/3 z-0 " alt="Profile 2" />
-								<div className="flex-grow">
-									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
-										Mrs. Nair
-									</h2>
-									<p className="mb-4 text-gray-700">
-										Head Engineer of Agromart Group
-									</p>
-								</div>
-							</div>
-							<div>
-								<p className="text-justify px-6 text-rose-950 text-2xl animate-pulse">"Heal the world through green. If you wanted the same, Join us!"</p>
-							</div>
-						</div>
-						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-white rounded shadow animate-fade-in">
-							<div className="p-10 flex flex-col gap-10 md:flex-row">
-								<img src={prof3} className="w-1/4 h-1/3 z-0 " alt="Profile 3" />
-								<div className="flex-grow">
-									<h2 className="mb-4 text-2xl font-bold text-yellow-700">
-										Mr. Shah
-									</h2>
-									<p className="mb-4 text-gray-700">
-										Software Engineer
-									</p>
-								</div>
-							</div>
-							<div>
-								<p className="text-justify px-6 text-rose-950 text-2xl animate-pulse">“This not only brings a green revolution, but also a sense of fraternity among different people and communities.“</p>
+								<p className="text-center px-6 text-black text-2xl animate-pulse">"A boon for the earth"</p>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div className="justify-center items-center bg-white py-8 bg-no-repeat bg-cover">
+				</div> */}
+				<QuoteSlider quotes={quotes} />
+				<div className="justify-center items-center bg-black py-8 bg-no-repeat bg-cover">
 					<div className="mx-auto lg:w-3/4">
-						<div className="border-2 lg:py-12 duration-150 bg-yellow-50 rounded shadow-xl">
-							<h1 className="text-black text-center lg:text-4xl md:text-3xl">
-								The future of <a className="text-mybgcolor-500 font-serif font-bold">
-									<span className="text-yellow-900">Farm</span> Investing
-								</a> is <span className="text-yellow-700 font-serif font-bold italic">Agroவாங்கோ</span>
+						<div className="border-2 border-primary-700 lg:py-12 duration-150 bg-black rounded shadow-xl">
+							<h1 className="text-white text-center lg:text-4xl md:text-3xl">
+								The future of <a className="text-primary-700 font-serif font-bold">
+									<span className="text-primary-800">Farm</span> Investing
+								</a> is <span className="text-primary-500 font-serif font-bold italic">Agro Edu Vaango</span>
 							</h1>
 							<div className="flex justify-center items-center pt-5">
-								<button onClick={handleSignin} className="border-2 mt-4 px-8 py-3 rounded-lg font-bold border-mybgcolor-500 text-white bg-mybgcolor-500 hover:text-mybgcolor-500 hover:bg-white">
+								<button onClick={handleSignin} className="border-2 mt-4 px-8 py-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">
 									Join Us
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				{/* <button
+					className={`fixed z-10 bottom-16 right-4 p-3 bg-green-500 text-white rounded-lg ${showButton ? 'block' : 'hidden'}`}
+					onClick={() => {
+						const phoneNumber = '1234567890'; // Replace with the desired phone number
+						const whatsappLink = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
+						window.open(whatsappLink, '_blank');
+					}}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-7 w-7"
+						fill="currentColor"
+						style="color: #128c7e"
+						viewBox="0 0 24 24">
+						<path
+							d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+					</svg>
+				</button> */}
+				<div className="fixed bottom-16 right-4 pb-1 z-50">
+					<a
+						href="https://wa.me/+919176889201"  // Replace with the actual WhatsApp number
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<img
+							src={whatsappicon}  // Replace with the path to your WhatsApp icon SVG or image
+							alt="WhatsApp Icon"
+							className="w-12 h-12 rounded-lg"  // Adjust the width and height as needed
+						/>
+					</a>
+				</div>
 				<button
-					className={`fixed bottom-4 right-4 p-3 bg-yellow-700 text-white rounded-lg ${showButton ? 'block' : 'hidden'
+					className={`fixed z-10 bottom-4 right-4 p-3 bg-primary-700 text-white rounded-lg ${showButton ? 'block' : 'hidden'
 						}`}
 					onClick={handleScrollToTop}
 				>

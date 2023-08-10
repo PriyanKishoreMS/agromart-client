@@ -19,6 +19,28 @@
   }
 } */
 
+@keyframes fadeInH {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutH {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in-out {
+  animation: fadeInH 3s ease 0s 1 forwards, fadeOutH 3s ease 3s 1 forwards;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -76,18 +98,18 @@
   background: var(--effect-color);
 }
 
-.effect-container.active::before { 
+.effect-container.active::before {
   border-radius: 20%;
   animation: ripple var(--effect-duration) linear forwards;
 }
 
 @keyframes ripple {
   from {
-  transform: scale(0);
+    transform: scale(0);
   }
 
-  to {  
- transform: Scale (6);
-  opacity: 0;
-}
+  to {
+    transform: Scale (6);
+    opacity: 0;
+  }
 }

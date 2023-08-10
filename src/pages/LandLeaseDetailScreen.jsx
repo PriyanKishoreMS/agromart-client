@@ -16,10 +16,16 @@ const LandLeaseDetailScreen = () => {
         navigate('/workinprogress');
     };
 
+    const handleTender = () => {
+        navigate('/tender', { state: { data, index } })
+    }
+
+    // console.log("dataaaa", data.registered);
+
     return (
         <>
             <Navbar />
-            <div className="flex flex-wrap min-h-screen">
+            <div className="flex flex-wrap min-h-screen pt-32">
                 <div className="w-full md:w-1/2 lg:w-1/4">
                     <div className="lg:mt-20">
                         <Carousel
@@ -72,19 +78,19 @@ const LandLeaseDetailScreen = () => {
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-3/4 lg:pl-4">
-                    <div className="bg-yellow-50 rounded-lg shadow-lg p-6">
+                    <div className="bg-white rounded-lg shadow-lg p-6">
                         <h2 className="text-xl font-semibold mb-2">Leasing Land #{index + 1}</h2>
                         <p>
                             We are offering a prime land for sale, located in{' '}
-                            <a className="text-yellow-700 font-bold">{data.landLocation}</a>, with an expansive area of{' '}
-                            <a className="text-yellow-700 font-bold">{data.landArea}</a>. This fertile land is suitable for cultivating{' '}
-                            <a className="text-yellow-700 font-bold">{data.cropType}</a> and{' '}
-                            <a className="text-yellow-700 font-bold">
-                                {data.landRegistered ? 'Land is Registered' : 'Land is not Registered'}
+                            <a className="text-primary-700 font-bold">{data.landLocation}</a>, with an expansive area of{' '}
+                            <a className="text-primary-700 font-bold">{data.landArea}</a>. This fertile land is suitable for cultivating{' '}
+                            <a className="text-primary-700 font-bold">{data.cropType}</a> and{' '}
+                            <a className="text-primary-700 font-bold">
+                                {data.registered ? 'Land is Registered' : 'Land is not Registered'}
                             </a>
                             . Whether you prefer traditional or modern cultivation methods, this land provides versatility in{' '}
-                            <a className="text-yellow-700 font-bold">{data.cultivationType}</a>. The land is available at a competitive price of{' '}
-                            <a className="text-yellow-700 font-bold">{data.landPrice}</a>. Don't miss this opportunity to acquire a valuable piece of land for your agricultural ventures.
+                            <a className="text-primary-700 font-bold">{data.cultivationType}</a>. The land is available at a competitive price of{' '}
+                            <a className="text-primary-700 font-bold">{data.landPrice}</a>. Don't miss this opportunity to acquire a valuable piece of land for your agricultural ventures.
                         </p>
                         <h3 className="text-xl mt-5 font-semibold mb-2">Additional Details:</h3>
                         <p className="mb-2">
@@ -101,11 +107,11 @@ const LandLeaseDetailScreen = () => {
                             <span className="font-bold">Land Description:</span> {data.landDesc}
                         </p>
                         <div className="flex justify-end mt-4">
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded mr-2">
-                                Add to Cart
+                            <button onClick={handleworkinprogress} className="bg-primary-500 text-white py-2 px-4 rounded mr-2">
+                                Add to Wish List
                             </button>
-                            <button onClick={handleworkinprogress} className="bg-mybgcolor-500 text-white py-2 px-4 rounded">
-                                Buy Now
+                            <button onClick={handleTender} className="bg-primary-500 text-white py-2 px-4 rounded">
+                                Tender
                             </button>
                         </div>
                     </div>

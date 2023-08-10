@@ -14,7 +14,7 @@ import "./Carousel.css";
 // import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from "react-query";
-import { getFilteredLandServices, getLandServices } from "../api/usersApi";
+import { getFilteredLandServices } from "../api/usersApi";
 import noimage from "../assets/noimage.png";
 
 const Dashboard = () => {
@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   // Handle the next page
   const handleNextPage = () => {
-    if (page < data.totalPages) {
+    if (page < data?.totalPages) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -86,9 +86,9 @@ const Dashboard = () => {
     navigate("/landsellingservice");
   }
 
-  const handleDetailView = () => {
-    navigate("/dashboard");
-  }
+  // const handleDetailView = () => {
+  //   navigate("/dashboard");
+  // }
 
   const handleDetailClick = (data, index) => {
     navigate(`/landleasedetail/${index + 1}`, { state: { data, index } });
@@ -96,22 +96,18 @@ const Dashboard = () => {
 
 
   if (isLoading) {
-    return <>
-      <div className="loading-container">
-        <div className="loading-content">
-          <FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
-          <span>Loading...</span>
-        </div>
-      </div>
-    </>
+    return (<div className="loading-container">
+    <FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
+    <span className="loading-text">Loading...</span>
+    </div>)
   }
 
   return (
     <>
       <div className="flex flex-col md:flex-row md:justify-between md:items-center md:mr-5">
-        <button onClick={handlelandlease} className="bg-mybgcolor-500 text-white py-2 px-4 rounded lg:self-end mt-4 md:mt-0">
+        <button onClick={handlelandlease} className="bg-primary-500 text-white py-2 px-4 rounded lg:self-end mt-4 md:mt-0">
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          Add Land for Lease
+          Add Tender
         </button>
         <input
           type="text"
@@ -164,7 +160,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div
-              className="bg-mybgcolor-500 rounded-3xl items-center justify-center  text-center border border-mybgcolor-500 pl-2 text-white w-full h-12"
+              className="bg-primary-500 rounded-3xl items-center justify-center  text-center border border-primary-500 pl-2 text-white w-full h-12"
               onClick={() => handleDetailClick(item, index)}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave()}
@@ -174,14 +170,14 @@ const Dashboard = () => {
               ) : (
                 <div>
                   <p className=''>Available {item.landArea} in {item.landLocation}</p>
-                  <p className=''><span className="font-bold">Price:</span> {item.landPrice}</p>
+                  <p className=''><span className="font-bold">Tender pricing:</span> {item.landPrice}</p>
                 </div>
               )}
             </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         <button
           onClick={handlePrevPage}
           disabled={page === 0}
@@ -191,12 +187,12 @@ const Dashboard = () => {
         </button>
         <button
           onClick={handleNextPage}
-          disabled={page === data.totalPages}
+          disabled={page === data?.totalPages}
           className="px-4 py-2 bg-blue-500 text-white rounded"
         >
           Next
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

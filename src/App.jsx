@@ -17,7 +17,13 @@ import LandLeaseDetailScreen from "./pages/LandLeaseDetailScreen";
 import ProductDetailScreen from "./pages/ProductDetailScreen";
 import Registration from "./pages/Registration";
 import DonateScreen from "./pages/DonateScreen";
-import SellerProfile from "./pages/Admin/SellerProfile";
+import UserEditScreen from "./pages/UserEditScreen";
+import AboutUs from "./pages/AboutUsScreen";
+import GalleryScreen from "./pages/GalleryScreen";
+import OurServices from "./pages/OurServicesScreen";
+import ContactUs from "./pages/ContactUsScreen";
+import Tender from "./pages/TenderScreen";
+import AdminProfile from "./pages/Admin/AdminProfile";
 
 const queryClient = new QueryClient();
 
@@ -29,12 +35,13 @@ function App() {
 					<Routes>
 						<Route path='/signin' element={<Signin />} />
 						<Route path='/' element={<Home />} />
+						<Route path='/updateUser' element={<UserEditScreen />} />
 						<Route path='/donate' element={<DonateScreen />} />
 						<Route
-							path='/sellerProfile'
+							path='/adminProfile'
 							element={
 								<Protected>
-									<SellerProfile />
+									<AdminProfile />
 								</Protected>
 							}
 						/>
@@ -47,7 +54,7 @@ function App() {
 								</Protected>
 							}
 						/>
-						<Route
+						{/* <Route
 							path='/dashboard'
 							element={
 								<Protected>
@@ -62,9 +69,48 @@ function App() {
 									<SellProductDashboard />
 								</Protected>
 							}
-						/>
+						/> */}
 						<Route path='/workinprogress' element={<WorkInProgress />} />
-						<Route path='/users' element={<Users />} />
+						<Route
+							path='/users'
+							element={
+								<Protected>
+									<Users />
+								</Protected>
+							}
+						/>
+						<Route
+							path='/aboutUs'
+							element={
+									<AboutUs />
+							}
+						/>
+						<Route
+							path='/ourServices'
+							element={
+									<OurServices />
+							}
+						/>
+						<Route
+							path='/tender'
+							element={
+								<Protected>
+									<Tender />
+								</Protected>
+							}
+						/>
+						<Route
+							path='/gallery'
+							element={
+									<GalleryScreen />
+							}
+						/>
+						<Route
+							path='/contactUs'
+							element={
+									<ContactUs />
+							}
+						/>
 						<Route
 							path='/landsellingservice'
 							element={

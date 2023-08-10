@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns }) => {
+const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns, onOptionClick }) => {
 
-    const handleItemClick = () => {
+    const handleItemClick = (item) => {
         closeDropdowns();
+        onOptionClick(item)
     };
 
     const titleRef = useRef();
@@ -21,7 +22,7 @@ const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns }) => {
         <div className="relative z-10">
             <button
                 
-                className="flex items-center mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-yellow-700"
+                className="flex border border-primary-500 bg-primary-500 p-2 font-bold rounded-lg items-center mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-slate-200"
                 onClick={() => toggleDropdown(title)}
             >
                 <div ref={titleRef} className="flex items-center"> {/* Add a flex container */}
@@ -47,7 +48,7 @@ const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns }) => {
                         {items.map((item) => (
                             <li key={item.label}
                                 className="p-2 m-2 text-gray-800 hover:bg-gray-200 break-words"
-                                onClick={handleItemClick}
+                                onClick={() => handleItemClick(item)}
                             >
                                 {item.label}
                             </li>
