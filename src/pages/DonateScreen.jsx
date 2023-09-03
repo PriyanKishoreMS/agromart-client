@@ -77,8 +77,6 @@ const DonateScreen = () => {
 
             setErrors(newErrors);
 
-            console.log(newErrors);
-
             const hasErrors = Object.values(newErrors).some((error) => !!error);
             if (!hasErrors) {
                 addDonateMutation.mutate(formData);

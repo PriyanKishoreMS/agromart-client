@@ -20,7 +20,6 @@ const BlogAddScreen = () => {
 
     const addBlogMutation = useMutation(postBlog, {
         onSuccess: () => {
-            console.log('Setting showAlert to true');
             setShowAlert(true);
             queryClient.invalidateQueries('blog');
         },
@@ -66,7 +65,6 @@ const BlogAddScreen = () => {
 
 
     const handleAlertClose = () => {
-        console.log('Closing alert');
         setShowAlert(false);
     };
 

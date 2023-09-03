@@ -18,9 +18,6 @@ const DashboardBlogScreen = () => {
         ['blogs', searchQuery, page],
         () => getBlogs(searchQuery, page, limit));
 
-
-    console.log(data, "bloggggg");
-
     const queryClient = useQueryClient();
 
     const deleteBlogMutation = useMutation(deleteBlog, {
@@ -86,12 +83,12 @@ const DashboardBlogScreen = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {(!data?.blogs || !Array.isArray(data?.blogs)) ? (
-                        <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md">
+                        <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md mx-2">
                             <p className="text-gray-500">No Blogs Available</p>
                         </div>
                     ) : (
                         data?.blogs?.map((blog) => (
-                            <div key={blog._id} className="bg-white rounded-lg shadow-md p-4">
+                            <div key={blog._id} className="bg-white rounded-lg shadow-md p-4 mx-2">
                                 <h2 className="text-xl font-semibold mb-2">{blog.title}</h2>
                                 <p className="text-gray-600"  style={{ maxHeight: expandedContent[blog._id] ? 'none' : '10em', overflow: 'hidden' }}>{blog.content}</p>
                                 {!expandedContent[blog._id] && (

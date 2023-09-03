@@ -14,11 +14,6 @@ export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 	const [userDataContent, setUserDataContent] = useState(null);
 
-	// const updateUserData = (newUserData) => {
-	// 	console.log(newUserData, "newUserData");
-	// 	setUserData(newUserData);
-	// };
-
 	const googleSignIn = () => {
 		const provider = new GoogleAuthProvider();
 		signInWithPopup(auth, provider);
@@ -45,7 +40,6 @@ export const AuthContextProvider = ({ children }) => {
 					photoURL: currentUser.photoURL,
 				};
 				const userContent = await createUser(userData);
-				console.log(userContent.user, "userContent");
 				setUserDataContent(userContent.user);
 			}
 		});

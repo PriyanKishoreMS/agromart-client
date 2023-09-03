@@ -16,13 +16,13 @@ const MyProductDashboard = () => {
     const [hoveredIndex, setHoveredIndex] = useState(-1);
     const [page, setPage] = useState(1);
 
-    const { userDataContent } = useAuth();
-
     const limit = 10;
 
+    const { userDataContent } = useAuth();
+
     const { isError, isLoading, isSuccess, data, error, totalPages } = useQuery(
-        ["products", userDataContent?._id, page],
-        () => getMyProductServices(userDataContent?._id, page, limit)
+        ["products", userDataContent._id, page],
+        () => getMyProductServices(userDataContent._id, page, limit)
     );
 
     const handleMouseEnter = (index) => {
@@ -60,11 +60,11 @@ const MyProductDashboard = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
                     {(data?.products?.length === 0 || !Array.isArray(data?.products)) ? (
-                        <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md">
+                        <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md mx-2">
                             <p className="text-gray-500">No Products Available</p>
                         </div>
-                    ) : (data?.products?.map((item, index) => (
-                        <div key={index} className="rounded-lg overflow-hidden shadow-md">
+                    ) : (data?.products.map((item, index) => (
+                        <div key={index} className="rounded-lg overflow-hidden shadow-md mx-2">
                             <div className="relative">
                                 <Carousel
                                     showThumbs={true}

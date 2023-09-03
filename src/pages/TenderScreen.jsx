@@ -34,8 +34,6 @@ const Tender = () => {
 
     //     const emailLink = `mailto:${data.user.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
-
-    console.log(data, "data");
     const handleSendEmail = () => {
     const emailSubject = `Inquiry about land available to tender in ${data.landLocation}`;
     const emailBody = `Hello, ${data.user.name}

@@ -87,8 +87,8 @@ const GalleryAddScreen = () => {
             <Navbar />
             <div className="container pt-36 pb-4 mx-auto min-h-screen">
                 <h1 className="text-2xl font-semibold mb-4">Add Image to Gallery</h1>
-                <form action="https://agromart-dev.onrender.com/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
                 {/* <form action="http://localhost:3000/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}> */}
+                <form action="https://agromart-dev.onrender.com/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="image" className="block text-sm font-medium text-gray-700">
                             Image

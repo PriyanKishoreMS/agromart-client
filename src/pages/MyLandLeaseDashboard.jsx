@@ -16,17 +16,18 @@ const MyLandDashboard = () => {
     const [hoveredIndex, setHoveredIndex] = useState(-1);
     const [page, setPage] = useState(1);
 
+    const limit = 10;
+
 
     const { userDataContent } = useAuth();
 
-    const limit = 10;
+
 
     const { isError, isLoading, isSuccess, data, error, totalPages } = useQuery(
-        ["lands", userDataContent?._id, page],
-        () => getMyLandServices(userDataContent?._id, page, limit)
+        ["lands", userDataContent._id, page],
+        () => getMyLandServices(userDataContent._id, page, limit)
     );
 
-    console.log(data, userDataContent._id, "MyList");
     const handleMouseEnter = (index) => {
         setHoveredIndex(index);
     };
@@ -34,8 +35,6 @@ const MyLandDashboard = () => {
     const handleMouseLeave = () => {
         setHoveredIndex(-1);
     };
-
-    console.log("totalllllll", data, page);
 
     const navigate = useNavigate();
 
@@ -63,12 +62,12 @@ const MyLandDashboard = () => {
             ) : (
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-                    {(!data.lands || !Array.isArray(data.lands)) ? (
-                        <div className="col-span-full flex justify-center items-center h-48 bg-red-300 rounded-lg shadow-md">
+                    {(data?.lands?.length === 0 || !Array.isArray(data?.lands)) ? (
+                        <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md mx-2">
                             <p className="text-gray-500">No Tenders Available</p>
                         </div>
                     ) : (data.lands.map((item, index) => (
-                        <div key={index} className="rounded-lg overflow-hidden shadow-md">
+                        <div key={index} className="rounded-lg overflow-hidden shadow-md mx-2">
                             <div className="relative">
                                 <Carousel
                                     showThumbs={false}

@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { useAuth } from "../hooks/useAuth";
 
 const ENDPOINT_URL = "https://agromart-dev.onrender.com/api";
 // const ENDPOINT_URL = "http://localhost:3000/api";
@@ -18,13 +17,14 @@ export const createUser = async userData => {
 	}
 };
 
-export const updateUser = async (id, updateduserData) => {
+export const updateUser = async (updateduserData) => {
 	try {
-		const response = await axios.put(`${ENDPOINT_URL}/updateUser/${id}`, updateduserData, {
+		const response = await axios.put(`${ENDPOINT_URL}/updateUser/${updateduserData.userId}`, updateduserData.formData, {
 			headers: {
 				"auth-token": localStorage.getItem("token")
 			},
 		});
+		return response.data
 	} catch (err) {
 		console.error({ Message: "Error posting user data", Error: err });
 	}
@@ -129,7 +129,6 @@ export const getFilteredLandServices = async (search, page, limit) => {
 				"auth-token": localStorage.getItem("token"),
 			},
 		});
-		// let landData = response.data;
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting land data", Error: err });
@@ -145,7 +144,6 @@ export const getBlogs = async (search, page, limit) => {
 				search: search
 			},
 		});
-		// let blogData = response.data;
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting blog data", Error: err });

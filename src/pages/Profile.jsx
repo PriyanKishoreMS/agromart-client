@@ -37,7 +37,6 @@ const Profile = () => {
 	  };
 
 	const handleOptionClick = (item) => {
-		console.log("optionnnnn", item);
 		if(item.label === "Tender List") {
 			togglePopupLandLease();
 		}

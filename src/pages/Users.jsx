@@ -14,24 +14,7 @@ const Users = () => {
 		getUsers
 	);
 
-
-	console.log(data, "dataaaa");
-
 	const navigate = useNavigate();
-
-	// if (isSuccess) console.log(data);
-
-	// const users = [
-	// 	{ name: 'John Doe', email: 'john.doe@example.com', mobile: '1234567890', propertyType: 'Agri' },
-	// 	{ name: 'Jane Smith', email: 'jane.smith@example.com', mobile: '9876543210', propertyType: 'Agri' },
-	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
-	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
-	// 	{ name: 'Robert Johnson', email: 'robert.johnson@example.com', mobile: '5678901234', propertyType: 'NonAgri' },
-	// ];
-
-	const handleusernav = () => {
-		navigate('/workinprogress');
-	}
 
 	const handleUserEdit = (data) => {
 		navigate(`/updateUser/`, { state: { data } });

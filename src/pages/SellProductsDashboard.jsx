@@ -29,8 +29,6 @@ const SellProductDashboard = () => {
 
   const { userDataContent } = useAuth();
 
-  console.log("SEll", selectedItemId);
-
   const queryClient = useQueryClient();
 
   const deleteProductMutation = useMutation(DeleteProductData, {
@@ -59,7 +57,6 @@ const SellProductDashboard = () => {
   };
 
   const handleDeleteClick = (id) => {
-    console.log('render', id);
     setSelectedItemId(id);
     showConfirmation();
   };
@@ -116,11 +113,11 @@ const SellProductDashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(data?.products?.length === 0 || !Array.isArray(data?.products)) ? (
-            <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md">
+            <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md mx-2">
               <p className="text-gray-500">No Products Available</p>
             </div>
           ) : (data?.products.map((item, index) => (
-            <div key={index} className="rounded-lg overflow-hidden shadow-md">
+            <div key={index} className="rounded-lg overflow-hidden shadow-md mx-2">
               <div className="relative">
                 <Carousel
                   showThumbs={true}
@@ -162,7 +159,6 @@ const SellProductDashboard = () => {
                 )}
               </div>
               <div className="p-4">
-                {/* {console.log(item.user.name, 'item.user.name')} */}
                 <p className="font-semibold text-lg mb-2">{item.productName}</p>
                 {/* <p className="text-gray-600 mb-2">{item.productPrice}</p> */}
                 <p className="font-semibold text-lg mb-2">{item.user?.name}</p>

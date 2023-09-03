@@ -4,17 +4,6 @@ const Alert = ({ type, message, onClose }) => {
 
     const [isVisible, setIsVisible] = useState(true);
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setIsVisible(false);
-    //         onClose();
-    //     }, 3000); // Adjust the timeout duration as needed
-
-    //     return () => {
-    //         clearTimeout(timer);
-    //     };
-    // }, [onClose]);
-
     if (!isVisible) {
         return null;
     }
@@ -35,8 +24,6 @@ const Alert = ({ type, message, onClose }) => {
             alertClass = 'bg-blue-500 text-white';
             break;
     }
-
-    console.log("entered", type, message);
 
     return (
         <div

@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-// import agribg2 from '../assets/bg/Agribg.jpeg';
-// import agribg3 from '../assets/bg/Agribg3.jpg';
-// import agribg4 from '../assets/bg/Agribg4.jpg';
-// import agribg5 from '../assets/bg/Agribg5.jpg';
 
 import Navbar from '../components/Navbar';
 import Footer from './Footer';
@@ -13,6 +9,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { deleteGalleryImage, getGalleryList } from '../api/usersApi';
 import Confirmation from '../components/Confirmation';
+
 
 const GalleryScreen = () => {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
@@ -32,9 +29,6 @@ const GalleryScreen = () => {
   });
 
   const reversedImages = galleryImages ? [...galleryImages].reverse() : [];
-
-
-  // console.log(galleryImages, 'galleryImages');
 
   const navigate = useNavigate();
 

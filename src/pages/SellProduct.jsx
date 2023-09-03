@@ -31,8 +31,6 @@ const SellProductService = () => {
         productImage: []
     });
 
-    // console.log(formData.landRegistered, "Land Register");
-
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -153,7 +151,6 @@ const SellProductService = () => {
 
     const handleClose = () => {
         setShowAlert(false);
-        console.log('Alert CLosing');
     }
 
     const handleSubmit = async e => {
@@ -180,7 +177,6 @@ const SellProductService = () => {
                 addProductMutation.mutate(newData);
                 setFormData(null);
                 navigate(-1);
-                // console.log('Success');
             }
             else {
                 setShowAlert(true);
@@ -292,8 +288,8 @@ const SellProductService = () => {
                                 <h2 className="mb-4 text-2xl font-semibold text-primary-700">
                                     Post Your Product Here
                                 </h2>
-                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
                                 {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
+                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (

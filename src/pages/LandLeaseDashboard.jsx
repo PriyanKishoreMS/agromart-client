@@ -116,11 +116,11 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(data?.landService?.length === 0 || !Array.isArray(data?.landService)) ? (
-            <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md">
+            <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md mx-2">
               <p className="text-gray-500">No Tenders Available</p>
             </div>
           ) : (data?.landService.map((item, index) => (
-            <div key={index} className="rounded-lg overflow-hidden shadow-md">
+            <div key={index} className="rounded-lg overflow-hidden shadow-md mx-2">
               <div className="relative">
                 <Carousel
                   showThumbs={true}
@@ -137,8 +137,8 @@ const Dashboard = () => {
                     item.landImage.map((imageUrl, imgIndex) => (
                       <div key={imgIndex} className="carousel-image">
                         <img
-                          src={`https://agromart-dev.onrender.com/${imageUrl}`}
                           // src={`http://localhost:3000/${imageUrl}`}
+                          src={`https://agromart-dev.onrender.com/${imageUrl}`}
                           alt={`Image ${imgIndex + 1}`}
                           className="w-full h-auto"
                         />

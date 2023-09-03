@@ -58,25 +58,29 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <svg
-            className="w-3 h-3 fill-current"
-            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 fill-current"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <title>Menu</title>
             <path
-              d="M0 0h20v20H0V0zm2 9h16v2H2V9zm0-4h16v2H2V5zm0 8h16v2H2v-2z"
-              fillRule="evenodd"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16m-7 6h7"
             />
           </svg>
         </button>
       </div>
       <div className={`lg:flex-grow ${isOpen ? "block" : "hidden"} w-full lg:flex lg:items-center lg:w-auto`}>
-          <Link
-            to="/aboutUs"
-            className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
-            style={{ fontFamily: "cursive" }}
-          >
-            About Us
-          </Link>
+        <Link
+          to="/aboutUs"
+          className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+          style={{ fontFamily: "cursive" }}
+        >
+          About Us
+        </Link>
         <div className="text-sm lg:flex-grow">
           {userDataContent?.userType === 'admin' && (
             <Link
@@ -88,16 +92,16 @@ const Navbar = () => {
             </Link>
           )}
           {userDataContent?.userType === 'admin' ?
-          user?.displayName && (
-            <Link
-              to='/adminProfile'
-              className='block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700'
-              style={{ fontFamily: "cursive" }}
+            user?.displayName && (
+              <Link
+                to='/adminProfile'
+                className='block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700'
+                style={{ fontFamily: "cursive" }}
 
-            >
-              Profile
-            </Link>
-          )
+              >
+                Profile
+              </Link>
+            )
             :
             user?.displayName && (
               <Link

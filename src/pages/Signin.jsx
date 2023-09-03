@@ -35,9 +35,9 @@ export default function Signin() {
 					>
 						Sign in with Google
 					</button>
-					<p className="text-white text-sm mt-6">
+					{/* <p className="text-white text-sm mt-6">
 						Don't have an account? <a href="#" className="text-primary-500 font-extrabold underline">Sign up</a>
-					</p>
+					</p> */}
 				</div>
 			</div>
 			<Footer />

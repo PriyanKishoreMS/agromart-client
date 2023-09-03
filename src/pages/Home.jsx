@@ -91,10 +91,6 @@ const Home = () => {
 		() => getBlogs(null, 1, itemsPerPage)
 	);
 
-
-	// console.log(blogslist, 'blogslist')
-
-
 	const handleScrollToTop = () => {
 		window.scrollTo({
 			top: 0,

@@ -6,43 +6,30 @@ import Navbar from '../components/Navbar';
 import Footer from './Footer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
+import Alert from '../components/Alert';
 
 const UserEditScreen = () => {
     const location = useLocation();
     const data = location.state?.data;
 
-	const navigate = useNavigate();
-    
-	const { mutate } = useMutation(updateUser);
-	const queryClient = useQueryClient();
 
+    const [showAlert, setShowAlert] = useState(false);
 
-    console.log(data, "eeeeeeeee");
+    const navigate = useNavigate();
+
+    const queryClient = useQueryClient();
 
     const [formData, setFormData] = useState({
         name: data?.name,
         userType: data?.userType,
     });
 
-    // Fetch user data when the component mounts
-    // useEffect(() => {
-    //     fetchUserData();
-    // }, []);
-
-    // const fetchUserData = async () => {
-    //     try {
-    //         const response = await axios.get('/api/getCurrentUser'); // Replace with your API endpoint to fetch the current user data
-    //         const user = response.data;
-    //         setFormData({
-    //             name: user.name,
-    //             mobile: user.mobile,
-    //             photo: null,
-    //             userType: user.userType,
-    //         });
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // };
+    const updateUserMutation = useMutation(updateUser, {
+        onSuccess: () => {
+            setShowAlert(true);
+            queryClient.invalidateQueries('users');
+        },
+    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -52,37 +39,34 @@ const UserEditScreen = () => {
         }));
     };
 
-    const handlePhotoChange = (e) => {
-        const file = e.target.files[0];
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            photo: file,
-        }));
-    };
-
-    const handleUpdateUser = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            // Send updated user data to the backend
-            await updateUser(data._id, formData);
-            mutate(formData, {
-                onSuccess: () => {
-                    queryClient.invalidateQueries("users");
-                },
-            });
-            console.log(formData, "formData");
-            alert('User updated successfully');
+            const updatedUser = {
+                name: formData.name,
+                userType: formData.userType,
+            };
+
+            updateUserMutation.mutate({ userId: data?._id, formData: updatedUser });
+
         } catch (err) {
             console.error(err);
             alert('Error updating user');
         }
     };
 
+
+    const handleClose = () => {
+        setShowAlert(false);
+        navigate(-1);
+    }
+
     return (
         <>
             <Navbar />
             <div className="container mx-auto pt-36 px-4 flex flex-col min-h-screen">
                 <h1 className="text-3xl font-bold mb-6">Edit User</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="flex flex-col space-y-4">
                         <input
                             type="text"
@@ -104,7 +88,8 @@ const UserEditScreen = () => {
                             <option value="user">User</option>
                         </select>
                         <button
-                            onClick={() => {handleUpdateUser(), navigate(-1)}}
+                            type="submit"
+                            disabled={updateUserMutation.isLoading}
                             className="bg-primary-500 text-white py-2 px-4 rounded-lg"
                         >
                             Update User
@@ -113,6 +98,13 @@ const UserEditScreen = () => {
                 </form>
             </div>
             <Footer />
+            {showAlert && (
+                <Alert
+                    message={'User updated successfully'}
+                    type={'success'}
+                    onClose={handleClose}
+                />
+            )}
         </>
     );
 };

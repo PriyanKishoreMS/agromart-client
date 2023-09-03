@@ -24,6 +24,8 @@ const Footer = () => {
                             <h2 className="text-xl font-bold mb-4">Company</h2>
                             <ul className="list-none">
                                 <li><a href="/aboutUs">About Us</a></li>
+                                <li><a href="/">Team</a></li>
+                                <li><a href="/">Careers</a></li>
                                 <li><a href="/contactUs">Contact Us</a></li>
                             </ul>
                         </div>
