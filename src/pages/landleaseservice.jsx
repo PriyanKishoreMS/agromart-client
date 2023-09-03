@@ -2,15 +2,14 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../hooks/useAuth";
 import { useRef, useState } from "react";
-// import firebase from "../components/postfirebase";
 import backgroundImage from '../assets/postingpage.png';
-// import 'firebase/compat/storage';
-// import Footer from "./Footer";
 import { postLandService } from "../api/usersApi";
 import Footer from "./Footer";
 import "../components/loading.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { useMutation, useQueryClient } from "react-query";
+import Alert from "../components/Alert";
 
 const LandLeaseService = () => {
     const [errors, setErrors] = useState({
@@ -41,18 +40,24 @@ const LandLeaseService = () => {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
 
     const { user } = useAuth();
 
-    // console.log(formData.cropType, formData.cultivationHistory, "Land Register");
 
     const [currentPage, setCurrentPage] = useState(1);
 
+    const queryClient = useQueryClient();
+
+    const addLandServiceMutation = useMutation(postLandService, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('lands');
+        },
+    });
+
     const handleChange = (e) => {
-        // console.log(typeof (e), "crop");
         const { name, value, type, checked, files } = e.target;
         if (type === 'file') {
-            // Handle multiple file selection
             const selectedFiles = Array.from(files);
             setFormData((prevData) => ({
                 ...prevData,
@@ -61,7 +66,6 @@ const LandLeaseService = () => {
         }
         else {
             const fieldValue = type === 'checkbox' ? checked : value;
-            // console.log("entered2", fieldValue, name);
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: fieldValue
@@ -94,54 +98,104 @@ const LandLeaseService = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        setIsLoading(true);
-        e.preventDefault();
-
-        // const storage = firebase.storage();
-        // const storageRef = storage.ref('landImage');
-        // const imageURLs = [];
-
-        // for (const image of formData.landImage) {
-        //     const imageRef = storageRef.child(image.name);
-        //     await imageRef.put(image);
-        //     const imageURL = await imageRef.getDownloadURL();
-        //     imageURLs.push(imageURL);
-        // }
-
-        let cultHistory = formData.cultivationHistory.join(',');
-        // console.log(cultHistory);
-
-        const landServiceData = {
-            landLocation: formData.landLocation,
-            landArea: formData.landArea,
-            registered: formData.landRegistered,
-            cropType: formData.cropType,
-            cultivationType: formData.cultivationType,
-            cultivationHistory: cultHistory,
-            soilType: formData.soilType,
-            waterFacility: formData.waterFacility,
-            landPrice: formData.landPrice,
-            landDesc: formData.landDesc,
-            landImage: formData.landImage,
+    const validateForm = () => {
+        const newErrors = {
+            landLocation: "",
+            landArea: "",
+            landRegistered: "",
+            cropType: "",
+            cultivationType: "",
+            cultivationHistory: "",
+            soilType: "",
+            waterFacility: "",
+            landPrice: "",
+            landDesc: "",
+            landImage: "",
         };
 
-        // console.log("Entered in Screen", landServiceData);
+        if (!formData.landLocation) {
+            newErrors.landLocation = "Land Location is required.";
+        }
 
-        await postLandService(landServiceData);
-        navigate('/profile');
-        // const formDataRef = firebase.database().ref('landLease');
-        // formDataRef
-        //     .push(newData)
-        //     .then(() => {
-        //         console.log('Data saved to Firebase');
-        //         alert('Data Saved Successfully.');
-        //         navigate('/profile');
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error saving data to Firebase:', error);
-        //     });
-        setIsLoading(false);
+        if (!formData.landArea) {
+            newErrors.landArea = "Land Area is required.";
+        }
+
+        if (!formData.cropType) {
+            newErrors.cropType = "Crop Type is required.";
+        }
+
+        if (!formData.cultivationType) {
+            newErrors.cultivationType = " Cultivation Type is required.";
+        }
+
+        if (formData.cultivationHistory.length === 0) {
+            newErrors.cultivationHistory = "Cultivation History is required.";
+        }
+
+        if (!formData.soilType) {
+            newErrors.soilType = "Soil Type is required.";
+        }
+
+        if (!formData.waterFacility) {
+            newErrors.waterFacility = "Water Facility is required.";
+        }
+
+        if (!formData.landPrice) {
+            newErrors.landPrice = "Land Price is required.";
+        }
+
+        if (!formData.landDesc) {
+            newErrors.landDesc = "Land Description is required.";
+        }
+
+
+        return newErrors;
+    };
+
+    const handleClose = () => {
+        setShowAlert(false);
+        console.log('Alert CLosing');
+    }
+
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault();
+
+            const newErrors = validateForm();
+
+            setErrors(newErrors);
+
+            const hasErrors = Object.values(newErrors).some((error) => !!error);
+
+            let cultHistory = formData.cultivationHistory.join(',');
+
+            const landServiceData = {
+                landLocation: formData.landLocation,
+                landArea: formData.landArea,
+                registered: formData.landRegistered,
+                cropType: formData.cropType,
+                cultivationType: formData.cultivationType,
+                cultivationHistory: cultHistory,
+                soilType: formData.soilType,
+                waterFacility: formData.waterFacility,
+                landPrice: formData.landPrice,
+                landDesc: formData.landDesc,
+                landImage: formData.landImage,
+            };
+
+            if (!hasErrors) {
+                addLandServiceMutation.mutate(landServiceData);
+                setFormData(null);
+                navigate(-1);
+                // console.log("success");
+            }
+            else {
+                setShowAlert(true);
+            }
+        } catch (error) {
+            console.error('Error adding blog:', error);
+        }
     };
 
     const cropTypeoptions = [
@@ -244,13 +298,12 @@ const LandLeaseService = () => {
                                 <h2 className="mb-4 text-2xl font-semibold text-primary-700">
                                     Post Your Tender Here
                                 </h2>
+                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
                                 {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
-                                <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (
                                                 <div>
-                                                    {/* <h1 className="text-2xl font-bold mb-4">Page 1</h1> */}
                                                     <div className="mb-4">
                                                         <label className="text-black mb-2" htmlFor="name">
                                                             Enter Your Land Location:
@@ -264,7 +317,6 @@ const LandLeaseService = () => {
                                                             placeholder="Location"
                                                             value={formData.landLocation}
                                                             onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
                                                         />
                                                         {errors.landLocation && <p className="text-red-500">{errors.landLocation}</p>}
                                                     </div>
@@ -281,7 +333,6 @@ const LandLeaseService = () => {
                                                             placeholder="Land Area"
                                                             value={formData.landArea}
                                                             onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
                                                         />
                                                         {errors.landArea && <p className="text-red-500">{errors.landArea}</p>}
                                                     </div>
@@ -297,17 +348,6 @@ const LandLeaseService = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        {/* <input
-                                                            className={`border ${errors.cropType ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="cropType"
-                                                            name="cropType"
-                                                            placeholder="Land Crop Type"
-                                                            value={formData.cropType}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.cropType && <p className="text-red-500">{errors.cropType}</p>}
                                                     </div>
                                                     <div className="mb-4">
@@ -320,14 +360,12 @@ const LandLeaseService = () => {
                                                             placeholder="Land Area"
                                                             checked={formData.landRegistered}
                                                             onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
                                                         />
                                                         <a className="text-black mb-2">
                                                             Please check whether your land is Registered
                                                         </a>
                                                         {errors.landRegistered && <p className="text-red-500">{errors.landRegistered}</p>}
                                                     </div>
-                                                    {/* Add more fields here for Page 1 */}
                                                     <div className="flex justify-end">
                                                         <button
                                                             className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
@@ -340,7 +378,6 @@ const LandLeaseService = () => {
                                             )}
                                             {currentPage === 2 && (
                                                 <div>
-                                                    {/* <h1 className="text-2xl font-bold mb-4">Page 2</h1> */}
                                                     <div className="mb-4">
                                                         <label className="text-black mb-2" htmlFor="name">
                                                             Enter Your Land Cultivation Type:
@@ -353,17 +390,6 @@ const LandLeaseService = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        {/* <input
-                                                            className={`border ${errors.cultivationType ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="cultivationType"
-                                                            name="cultivationType"
-                                                            placeholder="Land Cultivation Type"
-                                                            value={formData.cultivationType}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.cultivationType && <p className="text-red-500">{errors.cultivationType}</p>}
                                                     </div>
                                                     <div className="mb-4">
@@ -385,17 +411,6 @@ const LandLeaseService = () => {
                                                                 </div>
                                                             ))}
                                                         </div>
-                                                        {/* <input
-                                                            className={`border ${errors.cultivationHistory ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="cultivationHistory"
-                                                            name="cultivationHistory"
-                                                            placeholder="Land Cultivation History"
-                                                            value={formData.cultivationHistory}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.cultivationHistory && <p className="text-red-500">{errors.cultivationHistory}</p>}
                                                     </div>
                                                     <div className="mb-4">
@@ -410,17 +425,6 @@ const LandLeaseService = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        {/* <input
-                                                            className={`border ${errors.soilType ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="soilType"
-                                                            name="soilType"
-                                                            placeholder="Land Soil Type"
-                                                            value={formData.soilType}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.soilType && <p className="text-red-500">{errors.soilType}</p>}
                                                     </div>
                                                     <div className="mb-4">
@@ -435,20 +439,8 @@ const LandLeaseService = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        {/* <input
-                                                            className={`border ${errors.waterFacility ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="waterFacility"
-                                                            name="waterFacility"
-                                                            placeholder="Land Water Facility"
-                                                            value={formData.waterFacility}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.waterFacility && <p className="text-red-500">{errors.waterFacility}</p>}
                                                     </div>
-                                                    {/* Add more fields here for Page 2 */}
                                                     <div className="flex justify-end">
                                                         <button
                                                             className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
@@ -498,7 +490,6 @@ const LandLeaseService = () => {
                                                             placeholder="Land Description"
                                                             value={formData.landDesc}
                                                             onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
                                                         />
                                                         {errors.landDesc && <p className="text-red-500">{errors.landDesc}</p>}
                                                     </div>
@@ -517,7 +508,6 @@ const LandLeaseService = () => {
                                                         />
                                                         {errors.landImage && <p className="text-red-500">{errors.landImage}</p>}
                                                     </div>
-                                                    {/* Add more fields here for Page 3 */}
                                                     <div className="flex justify-end">
                                                         <button
                                                             className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
@@ -537,37 +527,42 @@ const LandLeaseService = () => {
                                             {currentPage === 4 && (
                                                 <div className="bg-green-100 p-2 rounded">
                                                     <h1 className="text-2xl font-bold mb-4">Confirm the Details:</h1>
-                                                    {/* Display the form data for preview */}
-                                                    <div className="mb-4">
-                                                        <p>Land Location: {formData.landLocation}</p>
-                                                        <p>Land Area: {formData.landArea}</p>
-                                                        <p>Land Crop Type: {formData.cropType}</p>
-                                                        <p>Land Registered: {formData.landRegistered === true ? "Land is Registered" : "Land is not Registered"}</p>
-                                                        <p>Land Cultivation Type: {formData.cultivationType}</p>
-                                                        <p>Land Cultivation History: {formData.cultivationHistory.join(',')}</p>
-                                                        <p>Land Soil Type: {formData.soilType}</p>
-                                                        <p>Land Water Facility: {formData.waterFacility}</p>
-                                                        <p>Land Price: {formData.landPrice}</p>
-                                                        <p>Land Description: {formData.landDesc}</p>
 
-                                                        {/* Display more fields here for preview */}
-                                                    </div>
-                                                    <div>
-                                                        {formData && formData.landImage && formData.landImage.length > 0 ? (
-                                                            <div className="grid grid-cols-3 gap-4">
-                                                                {formData.landImage.map((image, index) => (
-                                                                    <img
-                                                                        key={index}
-                                                                        src={URL.createObjectURL(image)}
-                                                                        alt={`Image ${index + 1}`}
-                                                                        className="w-full h-64 object-cover"
-                                                                    />
-                                                                ))}
+
+                                                    {formData && (
+                                                        <>
+                                                            <div className="mb-4">
+                                                                <p>Land Location: {formData.landLocation}</p>
+                                                                <p>Land Area: {formData.landArea}</p>
+                                                                <p>Land Crop Type: {formData.cropType}</p>
+                                                                <p>Land Registered: {formData.landRegistered === true ? "Land is Registered" : "Land is not Registered"}</p>
+                                                                <p>Land Cultivation Type: {formData.cultivationType}</p>
+                                                                <p>Land Cultivation History: {formData.cultivationHistory.join(',')}</p>
+                                                                <p>Land Soil Type: {formData.soilType}</p>
+                                                                <p>Land Water Facility: {formData.waterFacility}</p>
+                                                                <p>Land Price: {formData.landPrice}</p>
+                                                                <p>Land Description: {formData.landDesc}</p>
                                                             </div>
-                                                        ) : (
-                                                            <p>No images selected</p>
-                                                        )}
-                                                    </div>
+
+
+                                                            <div>
+                                                                {formData?.landImage?.length > 0 ? (
+                                                                    <div className="grid grid-cols-3 gap-4">
+                                                                        {formData.landImage.map((image, index) => (
+                                                                            <img
+                                                                                key={index}
+                                                                                src={URL.createObjectURL(image)}
+                                                                                alt={`Image ${index + 1}`}
+                                                                                className="w-full h-64 object-cover"
+                                                                            />
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <p>No images selected</p>
+                                                                )}
+                                                            </div>
+                                                        </>
+                                                    )}
                                                     <div className="flex justify-end">
                                                         <button
                                                             className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-black bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
@@ -591,49 +586,14 @@ const LandLeaseService = () => {
                         </div>
                     </div>
                 </div >
+                {showAlert && (
+                    <Alert
+                        message={'Kindly Enter all the fields'}
+                        type={'warning'}
+                        onClose={handleClose}
+                    />
+                )}
                 <Footer />
-                {/* <footer className=" justify-center items-center text-black bg-primary-500 bg-no-repeat">
-                    <div className="container mx-auto py-8 px-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Company</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">About Us</a></li>
-                                    <li><a href="/">Team</a></li>
-                                    <li><a href="/">Careers</a></li>
-                                    <li><a href="/">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Legal</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Privacy Policy</a></li>
-                                    <li><a href="/">Terms and Conditions</a></li>
-                                    <li><a href="/">Security</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Invest</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Features</a></li>
-                                    <li><a href="/">Investment Opportunities</a></li>
-                                    <li><a href="/">Investor Relations</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Follow Us</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Facebook</a></li>
-                                    <li><a href="/">Twitter</a></li>
-                                    <li><a href="/">Instagram</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="mt-8 text-center">
-                            <p>&copy; 2023 Agroவாங்கோ. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer> */}
             </div >
         </>
     )

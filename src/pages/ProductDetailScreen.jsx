@@ -13,10 +13,6 @@ const ProductDetailScreen = () => {
 
     const navigate = useNavigate();
 
-    const handleworkinprogress = () => {
-        navigate('/workinprogress');
-    };
-
     return (
         <>
             <Navbar />
@@ -72,6 +68,10 @@ const ProductDetailScreen = () => {
                     </div>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-3/4 lg:pl-4">
+                    <h3 className="text-xl mt-5 font-semibold mb-2">Land Owner Details:</h3>
+                    <p className="mb-2">
+                        <span className="font-bold">Name:</span> {data.user?.name}
+                    </p>
                     <div className="bg-white rounded-lg shadow-lg p-6">
                         <h2 className="text-xl font-semibold mb-2">Product Name: <a className='text-primary-700 font-serif italic'>{data.productName}</a></h2>
                         <p>
@@ -86,14 +86,6 @@ const ProductDetailScreen = () => {
                         <p className="mb-2">
                             <strong>Product Description:</strong> {data.productDescription}
                         </p>
-                        <div className="flex justify-end mt-4">
-                            <button onClick={handleworkinprogress} className="bg-primary-500 text-white py-2 px-4 rounded mr-2">
-                                Add to Cart
-                            </button>
-                            <button onClick={handleworkinprogress} className="bg-primary-500 text-white py-2 px-4 rounded">
-                                Buy Now
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>

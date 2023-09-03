@@ -6,24 +6,22 @@ import logo from '../assets/AgroLogo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [isOpened, setIsOpened] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const toggleDropdown = (dropdownTitle) => {
     if (openDropdown === dropdownTitle) {
-      setOpenDropdown(null); // If the same dropdown is clicked, close it
+      setOpenDropdown(null);
     } else {
-      setOpenDropdown(dropdownTitle); // Otherwise, open the clicked dropdown
+      setOpenDropdown(dropdownTitle);
     }
   };
 
   const closeDropdowns = () => {
-    setOpenDropdown(null); // Close all dropdowns
+    setOpenDropdown(null);
   };
   const navigate = useNavigate();
   const { user, logOut, userDataContent } = useAuth();
 
-  // console.log(userDataContent, "user");
 
   const handleSignOut = async () => {
     try {
@@ -46,9 +44,6 @@ const Navbar = () => {
     { label: "Registration for Technial Advisories", path: "/workinprogress" }
   ];
 
-  // const toggleDropdown = () => {
-  //   setIsOpened(!isOpened);
-  // };
 
   return (
     <nav className="flex z-20 flex-wrap items-center justify-between w-full p-6 mb-10 bg-white  lg:px-20 fixed shadow-md">
@@ -75,6 +70,13 @@ const Navbar = () => {
         </button>
       </div>
       <div className={`lg:flex-grow ${isOpen ? "block" : "hidden"} w-full lg:flex lg:items-center lg:w-auto`}>
+          <Link
+            to="/aboutUs"
+            className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
+            style={{ fontFamily: "cursive" }}
+          >
+            About Us
+          </Link>
         <div className="text-sm lg:flex-grow">
           {userDataContent?.userType === 'admin' && (
             <Link
@@ -108,13 +110,6 @@ const Navbar = () => {
               </Link>
             )}
           <Link
-            to="/aboutUs"
-            className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
-            style={{ fontFamily: "cursive" }}
-          >
-            About Us
-          </Link>
-          <Link
             to="/ourServices"
             className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"
             style={{ fontFamily: "cursive" }}
@@ -123,21 +118,6 @@ const Navbar = () => {
             Our Services
           </Link>
         </div>
-
-        {/* <Dropdown
-          title={"For Farmers"}
-          items={dropdownFarmers}
-          isOpen={openDropdown === "For Farmers"}
-          toggleDropdown={toggleDropdown}
-          closeDropdowns={closeDropdowns}
-        />
-        <Dropdown
-          title={"More"}
-          items={dropdownNames}
-          isOpen={openDropdown === "More"}
-          toggleDropdown={toggleDropdown}
-          closeDropdowns={closeDropdowns}
-        /> */}
         <Link
           to="/gallery"
           className="block mt-4 mr-4 text-black font-semibold text-lg lg:inline-block lg:mt-0 hover:text-primary-700"

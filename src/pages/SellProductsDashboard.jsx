@@ -1,34 +1,43 @@
 import React, { useEffect, useState } from 'react';
-// import fetchfirebase from '../components/fetchfirebase';
-// import Footer from './Footer';
-// import Navbar from '../components/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import "../components/loading.css";
-// import bgprof from "../assets/bgprof.png"
 import { Carousel } from 'react-responsive-carousel';
-// import Slider from 'react-slick';
-// import 'slick-carousel/slick/slick.css';
-// import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
-import { getProduct } from '../api/usersApi';
-import { useQuery } from 'react-query';
+import { DeleteProductData, getProduct } from '../api/usersApi';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import noimage from "../assets/noimage.png";
+import { useAuth } from '../hooks/useAuth';
+import Confirmation from '../components/Confirmation';
 
 
 
 const SellProductDashboard = () => {
-  const [formData, setFormData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+
+  const limit = 10;
 
 
   const { isError, isLoading, isSuccess, data, error } = useQuery(
-    ["products"],
-    getProduct
+    ["products", searchQuery, page],
+    () => getProduct(searchQuery, page, limit)
   );
 
-  console.log("SEll", data);
+  const { userDataContent } = useAuth();
+
+  console.log("SEll", selectedItemId);
+
+  const queryClient = useQueryClient();
+
+  const deleteProductMutation = useMutation(DeleteProductData, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('products');
+    },
+  });
 
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -40,137 +49,165 @@ const SellProductDashboard = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // setIsLoading(true);
-  //     const formDataRef = fetchfirebase.database().ref('sellProducts');
 
-  //     try {
-  //       const snapshot = await formDataRef.once('value');
-  //       const formDataList = [];
-
-  //       snapshot.forEach((childSnapshot) => {
-  //         const data = childSnapshot.val();
-  //         formDataList.push(data);
-  //       });
-
-  //       setFormData(formDataList);
-  //     } catch (error) {
-  //       console.error('Error fetching data from Firebase:', error);
-  //     }
-  //     // setIsLoading(false);
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  var settings = {
-    infinite: true,
-    autoPlay: true,
-    speed: 1000,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  };
+  const handleProduct = () => {
+    navigate("/sellproductservice");
+  }
 
   const handleDetailClick = (data, index) => {
     navigate(`/productdetail/${index + 1}`, { state: { data, index } });
   };
 
-  if (isLoading) {
-    return (
-      <div className="loading-container">
-			<FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
-			<span className="loading-text">Loading...</span>
-		  </div>
-    )
-  }
+  const handleDeleteClick = (id) => {
+    console.log('render', id);
+    setSelectedItemId(id);
+    showConfirmation();
+  };
+
+  const showConfirmation = () => {
+    setIsConfirmationVisible(true);
+  };
+
+  const hideConfirmation = () => {
+    setIsConfirmationVisible(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedItemId) {
+      await deleteProductMutation.mutateAsync(selectedItemId);
+      hideConfirmation();
+      setSelectedItemId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedItemId(null);
+    hideConfirmation();
+  };
 
   return (
     <>
-      <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4">
-        {data && data.products.map((item, index) => (
-          <div key={index} className="pr-4 mb-20">
-            <div className="mt-4">
-              <div className="">
+      <div className="flex items-center mt-4 mb-8">
+        {userDataContent?.userType === 'user' && (
+          <button
+            onClick={handleProduct}
+            className="bg-primary-500 text-white py-2 px-4 rounded"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add Product
+          </button>
+        )}
+        <div className="w-72 ml-4">
+          <input
+            type="text"
+            placeholder="Search by location..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="px-4 py-2 w-full rounded-lg border border-gray-400 focus:outline-none focus:border-primary-700"
+          />
+        </div>
+      </div>
+      {isLoading ? (
+        <div className="loading-container">
+          <FontAwesomeIcon icon={faSpinner} spin className="loading-spinner" />
+          <span className="loading-text">Loading...</span>
+        </div>
+      ) : (
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {(data?.products?.length === 0 || !Array.isArray(data?.products)) ? (
+            <div className="col-span-full flex justify-center items-center h-48 bg-slate-100 rounded-lg shadow-md">
+              <p className="text-gray-500">No Products Available</p>
+            </div>
+          ) : (data?.products.map((item, index) => (
+            <div key={index} className="rounded-lg overflow-hidden shadow-md">
+              <div className="relative">
                 <Carousel
-                  showThumbs={false}
+                  showThumbs={true}
                   showStatus={false}
                   dynamicHeight={false}
                   autoPlay={true}
                   infiniteLoop={true}
                   swipeable={true}
                   emulateTouch={true}
-                  showIndicators={false}
+                  showIndicators={true}
+                  showArrows={false}
                 >
-                  {item.productImage && item.productImage.length > 0 ? (
+                  {item?.productImage && item?.productImage.length > 0 ? (
                     item.productImage.map((imageUrl, imgIndex) => (
                       <div key={imgIndex} className="carousel-image">
                         <img
-                          src={`https://agromart-dev.onrender.com/${imageUrl}`} 
                           // src={`http://localhost:3000/${imageUrl}`}
+                          src={`https://agromart-dev.onrender.com/${imageUrl}`}
                           alt={`Image ${imgIndex + 1}`}
-                          className="max-w-full container mb-2"
-                          style={{ width: '500px', height: '250px' }} // Set the desired height here
+                          className="w-full h-auto"
                         />
                       </div>
                     ))
                   ) : (
                     <img
                       src={noimage}
-                      className="max-w-full container mb-2"
-                      style={{ width: '500px', height: '250px' }}
+                      className="w-full h-auto"
                     />
                   )}
                 </Carousel>
-              </div>
-              <div
-                className="bg-primary-500 rounded-3xl items-center justify-center  text-center border border-primary-500 pl-2 text-white w-full h-12"
-                onClick={() => handleDetailClick(item, index)}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                {hoveredIndex === index ? (
-                  <p className="">View</p>
-                ) : (
-                  <div className="">
-                    <p className="">Available {item.productName}</p>
-                    <p className="">
-                      <span className="font-bold">Price:</span> {item.productPrice}
-                    </p>
-                  </div>
+
+                {userDataContent?.userType === "admin" && (
+                  <button
+                    onClick={() => handleDeleteClick(item._id)}
+                    className="bg-red-500 text-white rounded-lg absolute top-2 right-2 p-2 hover:bg-red-700"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 )}
               </div>
+              <div className="p-4">
+                {/* {console.log(item.user.name, 'item.user.name')} */}
+                <p className="font-semibold text-lg mb-2">{item.productName}</p>
+                {/* <p className="text-gray-600 mb-2">{item.productPrice}</p> */}
+                <p className="font-semibold text-lg mb-2">{item.user?.name}</p>
+                <div className="flex justify-between items-center">
+                  <p className="text-primary-500 font-semibold">{item.productPrice}</p>
+                  <button
+                    onClick={() => handleDetailClick(item, index, item._id)}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={() => handleMouseLeave()}
+                    className="text-primary-500 hover:text-primary-700 font-semibold cursor-pointer"
+                  >
+                    {hoveredIndex === index ? 'View' : 'Details'}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+          )}
+        </div >
+      )}
+      <div className="pagination-container flex justify-center items-center mt-4 mb-4">
+        <button
+          onClick={() => setPage(prevPage => Math.max(prevPage - 1, 1))}
+          disabled={page === 1}
+          className="bg-primary-500 text-white px-4 py-2 rounded-l hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <span className="px-4">{page}</span>
+        <button
+          onClick={() => setPage(prevPage => prevPage + 1)}
+          disabled={!data?.landService || data?.landService.length === 0 || data?.landService.length < limit}
+          className="bg-primary-500 text-white px-4 py-2 rounded-r hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
       </div>
+
+      {isConfirmationVisible && (
+        <Confirmation
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          message="Are you sure you want to delete this item?"
+        />
+      )}
     </>
   );
 };

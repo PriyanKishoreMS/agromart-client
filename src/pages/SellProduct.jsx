@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useAuth } from "../hooks/useAuth";
-import { useRef, useState } from "react";
-// import firebase from "../components/postfirebase";
+import { useState } from "react";
 import backgroundImage from '../assets/postingpage.png';
-// import 'firebase/compat/storage';
 import Footer from "./Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import "../components/loading.css";
 import { postProduct } from "../api/usersApi";
+import { useMutation, useQueryClient } from "react-query";
+import Alert from "../components/Alert";
 
 const SellProductService = () => {
 
@@ -36,6 +35,15 @@ const SellProductService = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+
+    const queryClient = useQueryClient();
+
+    const addProductMutation = useMutation(postProduct, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('products');
+        },
+    });
 
     const handleChange = (e) => {
         const { name, value, type, checked, files } = e.target;
@@ -62,96 +70,124 @@ const SellProductService = () => {
 
     const navigate = useNavigate();
 
-    const resizeImage = (image) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const img = new Image();
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 500; // Define your desired maximum width
-                    const MAX_HEIGHT = 350; // Define your desired maximum height
-                    let width = img.width;
-                    let height = img.height;
+    const validateForm = () => {
+        const newErrors = {
+            productName: "",
+            productCategory: "",
+            productManufacturer: "",
+            productDescription: "",
+            productPrice: "",
+            productQuantity: "",
+            productImage: ""
+        };
 
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
+        if (!formData.productName) {
+            newErrors.productName = "Product Name is required.";
+        }
 
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    console.log("Height:",height,"width:", width);
-                    ctx.drawImage(img, 0, 0, width, height);
+        if (!formData.productCategory) {
+            newErrors.productCategory = "Product Category is required.";
+        }
 
-                    canvas.toBlob((blob) => {
-                        const resizedFile = new File([blob], image.name, { type: image.type });
-                        resolve(resizedFile);
-                    }, image.type);
-                };
-                img.src = event.target.result;
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(image);
-        });
+        if (!formData.productManufacturer) {
+            newErrors.productManufacturer = "Product Manufacturer is required.";
+        }
+
+        if (!formData.productDescription) {
+            newErrors.productDescription = "Product Description is required.";
+        }
+
+        if (!formData.productPrice) {
+            newErrors.productPrice = "Product Price is required.";
+        }
+
+        if (!formData.productQuantity) {
+            newErrors.productQuantity = "Product Quantity is required.";
+        }
+
+        return newErrors;
     };
 
-    const handleSubmit = async (e) => {
-        setIsLoading(true);
-        e.preventDefault();
+    // const resizeImage = (image) => {
+    //     return new Promise((resolve, reject) => {
+    //         const reader = new FileReader();
+    //         reader.onload = function (event) {
+    //             const img = new Image();
+    //             img.onload = function () {
+    //                 const canvas = document.createElement('canvas');
+    //                 const MAX_WIDTH = 500; // Define your desired maximum width
+    //                 const MAX_HEIGHT = 350; // Define your desired maximum height
+    //                 let width = img.width;
+    //                 let height = img.height;
 
-        // const storage = firebase.storage();
-        // const storageRef = storage.ref('productImage');
-        // const imageURLs = [];
+    //                 if (width > height) {
+    //                     if (width > MAX_WIDTH) {
+    //                         height *= MAX_WIDTH / width;
+    //                         width = MAX_WIDTH;
+    //                     }
+    //                 } else {
+    //                     if (height > MAX_HEIGHT) {
+    //                         width *= MAX_HEIGHT / height;
+    //                         height = MAX_HEIGHT;
+    //                     }
+    //                 }
 
-        // for (const image of formData.productImage) {
-        //     const resizedImage = await resizeImage(image);
-        //     const imageRef = storageRef.child(image.name);
-        //     await imageRef.put(resizedImage);
-        //     const imageURL = await imageRef.getDownloadURL();
-        //     imageURLs.push(imageURL);
-        // }
+    //                 canvas.width = width;
+    //                 canvas.height = height;
+    //                 const ctx = canvas.getContext('2d');
+    //                 console.log("Height:", height, "width:", width);
+    //                 ctx.drawImage(img, 0, 0, width, height);
 
-        const newData = {
-            productName: formData.productName,
-            productCategory: formData.productCategory,
-            productPrice: formData.productPrice,
-            productManufacturer: formData.productManufacturer,
-            productQuantity: formData.productQuantity,
-            productDescription: formData.productDescription,
-            productImage: formData.productImage,
-        };
-        // console.log(
-        //     typeof(formData.productName),
-        //     typeof(formData.productCategory),
-        //     typeof(formData.productPrice),
-        //     typeof(formData.productManufacturer),
-        //     typeof(formData.productQuantity),
-        //     typeof(formData.productDescription),
-        //     );
+    //                 canvas.toBlob((blob) => {
+    //                     const resizedFile = new File([blob], image.name, { type: image.type });
+    //                     resolve(resizedFile);
+    //                 }, image.type);
+    //             };
+    //             img.src = event.target.result;
+    //         };
+    //         reader.onerror = reject;
+    //         reader.readAsDataURL(image);
+    //     });
+    // };
 
-        postProduct(newData);
 
-        // const formDataRef = firebase.database().ref('sellProducts');
-        // formDataRef
-        //     .push(newData)
-        //     .then(() => {
-        //         console.log('Data saved to Firebase');
-        //         alert('Data Saved Successfully.');
-        //         navigate('/productdashboard');
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error saving data to Firebase:', error);
-        //     });
-        setIsLoading(false);
+    const handleClose = () => {
+        setShowAlert(false);
+        console.log('Alert CLosing');
+    }
+
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault();
+
+            const newErrors = validateForm();
+
+            setErrors(newErrors);
+
+            const hasErrors = Object.values(newErrors).some((error) => !!error);
+
+            const newData = {
+                productName: formData.productName,
+                productCategory: formData.productCategory,
+                productPrice: formData.productPrice,
+                productManufacturer: formData.productManufacturer,
+                productQuantity: formData.productQuantity,
+                productDescription: formData.productDescription,
+                productImage: formData.productImage,
+            };
+
+            if (!hasErrors) {
+                addProductMutation.mutate(newData);
+                setFormData(null);
+                navigate(-1);
+                // console.log('Success');
+            }
+            else {
+                setShowAlert(true);
+            }
+        } catch (error) {
+            console.error('Error adding blog:', error);
+        }
     };
 
     const productCategoryoptions = [
@@ -182,11 +218,11 @@ const SellProductService = () => {
         <>
             <div className="bg-white bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}>
                 <Navbar />
-                <div className="max-w-6xl mx-auto rounded-lg shadow-lg bg-transparent">
+                <div className="max-w-6xl pt-36 mx-auto rounded-lg shadow-lg bg-transparent">
                     <div className="container mx-auto px-4 lg:px-0 py-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div className="p-6 bg-transparent rounded animate-custom">
-                                <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
+                                <h2 className="mb-4 text-2xl font-semibold text-primary-300">
                                     Post your Products Here..
                                 </h2>
                                 <ul className="text-black">
@@ -252,12 +288,12 @@ const SellProductService = () => {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="p-6 bg-yellow-50 rounded animate-custom">
-                                <h2 className="mb-4 text-2xl font-semibold text-yellow-700">
+                            <div className="p-6 bg-white rounded animate-custom">
+                                <h2 className="mb-4 text-2xl font-semibold text-primary-700">
                                     Post Your Product Here
                                 </h2>
+                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
                                 {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
-                                <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (
@@ -292,17 +328,6 @@ const SellProductService = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                        {/* <input
-                                                            className={`border ${errors.productCategory ? 'border-red-500' : 'border-gray-300'}  rounded-md py-2 px-4 w-full`}
-                                                            // ref={nameInputRef}
-                                                            type="text"
-                                                            id="productCategory"
-                                                            name="productCategory"
-                                                            placeholder="Product Category"
-                                                            value={formData.productCategory}
-                                                            onChange={handleChange}
-                                                        // onSelect={(e) => handleNameSelection(e.target.value)}
-                                                        /> */}
                                                         {errors.productCategory && <p className="text-red-500">{errors.productCategory}</p>}
                                                     </div>
                                                     <div className="mb-4">
@@ -341,7 +366,7 @@ const SellProductService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Next
@@ -403,13 +428,13 @@ const SellProductService = () => {
                                                     </div>
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleNext}
                                                         >
                                                             Preview
@@ -420,40 +445,43 @@ const SellProductService = () => {
                                             {currentPage === 3 && (
                                                 <div>
                                                     <h1 className="text-2xl font-bold mb-4">Confirm the Details:</h1>
-                                                    {/* Display the form data for preview */}
-                                                    <div className="mb-4">
-                                                        <p>Product Name: {formData.productName}</p>
-                                                        <p>Product Category: {formData.productCategory}</p>
-                                                        <p>Product Manufacturer: {formData.productManufacturer}</p>
-                                                        <p>Product Price: {formData.productPrice}</p>
-                                                        <p>Product Quantity: {formData.productQuantity} kg</p>
-                                                        <p>Product Description: {formData.productDescription}</p>
-                                                    </div>
-                                                    <div>
-                                                        {formData && formData.productImage && formData.productImage.length > 0 ? (
-                                                            <div className="grid grid-cols-3 gap-4">
-                                                                {formData.productImage.map((image, index) => (
-                                                                    <img
-                                                                        key={index}
-                                                                        src={URL.createObjectURL(image)}
-                                                                        alt={`Image ${index + 1}`}
-                                                                        className="w-full h-64 object-cover"
-                                                                    />
-                                                                ))}
+                                                    {formData && (
+                                                        <>
+                                                            <div className="mb-4">
+                                                                <p>Product Name: {formData.productName}</p>
+                                                                <p>Product Category: {formData.productCategory}</p>
+                                                                <p>Product Manufacturer: {formData.productManufacturer}</p>
+                                                                <p>Product Price: {formData.productPrice}</p>
+                                                                <p>Product Quantity: {formData.productQuantity} kg</p>
+                                                                <p>Product Description: {formData.productDescription}</p>
                                                             </div>
-                                                        ) : (
-                                                            <p>No images selected</p>
-                                                        )}
-                                                    </div>
+                                                            <div>
+                                                                {formData?.productImage?.length > 0 ? (
+                                                                    <div className="grid grid-cols-3 gap-4">
+                                                                        {formData.productImage.map((image, index) => (
+                                                                            <img
+                                                                                key={index}
+                                                                                src={URL.createObjectURL(image)}
+                                                                                alt={`Image ${index + 1}`}
+                                                                                className="w-full h-64 object-cover"
+                                                                            />
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <p>No images selected</p>
+                                                                )}
+                                                            </div>
+                                                        </>
+                                                    )}
                                                     <div className="flex justify-end">
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
                                                         >
                                                             Go Back
                                                         </button>
                                                         <button
-                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-yellow-700 hover:bg-white mx-2"
+                                                            className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-700 hover:bg-white mx-2"
                                                             onClick={handleSubmit}
                                                         >
                                                             Post
@@ -468,49 +496,15 @@ const SellProductService = () => {
                         </div>
                     </div>
                 </div >
+
+                {showAlert && (
+                    <Alert
+                        message={'Kindly Enter all the fields'}
+                        type={'warning'}
+                        onClose={handleClose}
+                    />
+                )}
                 <Footer />
-                {/* <footer className=" justify-center items-center text-white bg-primary-500 bg-no-repeat">
-                    <div className="container mx-auto py-8 px-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Company</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">About Us</a></li>
-                                    <li><a href="/">Team</a></li>
-                                    <li><a href="/">Careers</a></li>
-                                    <li><a href="/">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Legal</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Privacy Policy</a></li>
-                                    <li><a href="/">Terms and Conditions</a></li>
-                                    <li><a href="/">Security</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Invest</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Features</a></li>
-                                    <li><a href="/">Investment Opportunities</a></li>
-                                    <li><a href="/">Investor Relations</a></li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold mb-4">Follow Us</h2>
-                                <ul className="list-none">
-                                    <li><a href="/">Facebook</a></li>
-                                    <li><a href="/">Twitter</a></li>
-                                    <li><a href="/">Instagram</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="mt-8 text-center">
-                            <p>&copy; 2023 Agroவாங்கோ. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer> */}
             </div >
         </>
     )

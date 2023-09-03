@@ -10,11 +10,7 @@ export const createUser = async userData => {
 	try {
 		const response = await axios.post(`${ENDPOINT_URL}/postUser`, userData);
 
-		// const { updateUserData } = useAuth();
-		
 		localStorage.setItem("token", response.data.token);
-		console.log(response.data, "tokennnnnnnn");
-		// updateUserData(response.data.user);
 
 		return response.data
 	} catch (err) {
@@ -23,19 +19,12 @@ export const createUser = async userData => {
 };
 
 export const updateUser = async (id, updateduserData) => {
-	// console.log(updateduserData, "updateduserData");
 	try {
-		// const { name, userType } = updateduserData;
-		// // console.log();
-		// const updatedData = new FormData();
-		// updatedData.append('name', name);
-		// updatedData.append('userType', userType);
 		const response = await axios.put(`${ENDPOINT_URL}/updateUser/${id}`, updateduserData, {
 			headers: {
 				"auth-token": localStorage.getItem("token")
 			},
 		});
-		console.log(response.data, "tokennnnnnnn");
 	} catch (err) {
 		console.error({ Message: "Error posting user data", Error: err });
 	}
@@ -54,25 +43,69 @@ export const getUsers = async () => {
 	}
 };
 
-// export const getLandServices = async () => {
-// 	try {
-// 		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
-// 			headers: {
-// 				"auth-token": localStorage.getItem("token"),
-// 			},
-// 		});
-// 		return response.data;
-// 	} catch (err) {
-// 		console.error({ Message: "Error getting land data", Error: err });
-// 	}
-// };
-
-export const getMyLandServices = async (id) => {
+export const getMyLandServices = async (id, page, limit) => {
 	try {
-		// console.log("Pages", page);
-		const limit = 50;
-		// const skip = page * limit;
 		const response = await axios.get(`${ENDPOINT_URL}/userLands/${id}`, {
+			params: {
+				page: page,
+				limit: limit
+			},
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const getMyProductServices = async (id, page, limit) => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/userProducts/${id}`, {
+			params: {
+				page: page,
+				limit: limit
+			},
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const getLandDetail = async (id) => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/getLandService/${id}`, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const DeleteLandData = async (id) => {
+	try {
+		const response = await axios.delete(`${ENDPOINT_URL}/deleteLandService/${id}`, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const DeleteProductData = async (id) => {
+	try {
+		const response = await axios.delete(`${ENDPOINT_URL}/deleteProduct/${id}`, {
 			headers: {
 				"auth-token": localStorage.getItem("token"),
 			},
@@ -84,11 +117,8 @@ export const getMyLandServices = async (id) => {
 };
 
 
-export const getFilteredLandServices = async (search, page) => {
+export const getFilteredLandServices = async (search, page, limit) => {
 	try {
-		console.log("Pages", page);
-		const limit = 50;
-		// const skip = page * limit;
 		const response = await axios.get(`${ENDPOINT_URL}/getLandService`, {
 			params: {
 				page: page,
@@ -106,8 +136,62 @@ export const getFilteredLandServices = async (search, page) => {
 	}
 };
 
+export const getBlogs = async (search, page, limit) => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/getBlogs`, {
+			params: {
+				page: page,
+				limit: limit,
+				search: search
+			},
+		});
+		// let blogData = response.data;
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting blog data", Error: err });
+	}
+};
+
+export const postBlog = async blogData => {
+	try {
+		const response = await axios.post(`${ENDPOINT_URL}/postBlog`, blogData, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+	} catch (err) {
+		console.error({ Message: "Error posting Blog data", Error: err });
+		throw err;
+	}
+};
+
+export const deleteBlog = async (blogId) => {
+	try {
+		const response = await axios.delete(`${ENDPOINT_URL}/deleteBlog/${blogId}`, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error(error.response.data.message);
+	}
+};
+
+export const deleteGalleryImage = async (imgId) => {
+	try {
+		const response = await axios.delete(`${ENDPOINT_URL}/deleteGallery/${imgId}`, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+			},
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error(error.response.data.message);
+	}
+};
+
 export const postLandService = async landServiceData => {
-	// console.log("Entered", localStorage.getItem("token"));
 	try {
 		const formData = new FormData();
 
@@ -125,22 +209,18 @@ export const postLandService = async landServiceData => {
 			formData.append("landImage", image);
 		});
 
-		console.log(formData, "ddddddddddddd");
-
 		const response = await axios.post(`${ENDPOINT_URL}/postLandService`, formData, {
 			headers: {
 				"auth-token": localStorage.getItem("token"),
 				"Content-Type": "multipart/form-data",
 			}
 		});
-		console.log(response.data);
 	} catch (err) {
 		console.error({ Message: "Error posting Land Service data", Error: err });
 	}
 };
 
 export const postProduct = async productData => {
-	console.log("Entered", productData);
 	try {
 		const formData = new FormData();
 
@@ -161,29 +241,84 @@ export const postProduct = async productData => {
 				"Content-Type": "multipart/form-data",
 			}
 		});
-		console.log(response.data);
 	} catch (err) {
 		console.error({ Message: "Error posting Product Service data", Error: err });
 	}
 };
 
-// fetch(`${ENDPOINT_URL}/postLandService`, {
-// 	method: 'POST',
-// 	headers: {
-// 	  'Content-Type': 'application/json',
-// 	  "auth-token": localStorage.getItem("token"),
-// 	},
-// 	body: JSON.stringify(landServiceData),
-// });
+export const postDonation = async donateData => {
+	try {
+		const formData = new FormData();
 
-export const getProduct = async () => {
+		formData.append("name", donateData.name);
+		formData.append("email", donateData.email);
+		formData.append("donation", donateData.donate_amount);
+		formData.append("transactionMode", donateData.transaction_mode);
+		formData.append("purpose", donateData.donate_purpose);
+		formData.append("type", donateData.donate_purpose);
+		formData.append("transactionId", donateData.transaction_id);
+		formData.append("message", donateData.message);
+
+		const response = await axios.post(`${ENDPOINT_URL}/postDonation`, formData, {
+			headers: {
+				"Content-Type": "application/json",
+			}
+		});
+	} catch (err) {
+		console.error({ Message: "Error posting Donation data", Error: err });
+		throw err;
+	}
+};
+
+export const getDonationList = async () => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/getDonations`);
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const getProduct = async (search, page, limit) => {
 	try {
 		const response = await axios.get(`${ENDPOINT_URL}/getProduct`, {
+			params: {
+				page: page,
+				limit: limit,
+				search: search
+			},
 			headers: {
 				"auth-token": localStorage.getItem("token"),
 			},
 		});
-		console.log("response", response.data);
+		return response.data;
+	} catch (err) {
+		console.error({ Message: "Error getting land data", Error: err });
+	}
+};
+
+export const addImageToGallery = async (galleryData) => {
+	try {
+
+		const formData = new FormData();
+		formData.append('galleryImage', galleryData.galleryImage);
+		formData.append('content', galleryData.content);
+
+		const response = await axios.post(`${ENDPOINT_URL}/postGallery`, formData, {
+			headers: {
+				"auth-token": localStorage.getItem("token"),
+				"Content-Type": "multipart/form-data",
+			}
+		});
+		return response.data;
+	} catch (error) {
+		throw new Error('Failed to add image to the gallery.');
+	}
+};
+
+export const getGalleryList = async () => {
+	try {
+		const response = await axios.get(`${ENDPOINT_URL}/getGallery`);
 		return response.data;
 	} catch (err) {
 		console.error({ Message: "Error getting land data", Error: err });

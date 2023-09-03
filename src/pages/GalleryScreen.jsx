@@ -1,53 +1,127 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import agribg2 from '../assets/bg/Agribg.jpeg';
 // import agribg3 from '../assets/bg/Agribg3.jpg';
 // import agribg4 from '../assets/bg/Agribg4.jpg';
 // import agribg5 from '../assets/bg/Agribg5.jpg';
 
-
-import image1 from '../assets/Gallery/IMG20220815084029.jpg';
-import image2 from '../assets/Gallery/IMG20220815102744.jpg';
-import image3 from '../assets/Gallery/IMG20220815111037.jpg';
-import image4 from '../assets/Gallery/IMG20220815110714.jpg';
-import image5 from '../assets/Gallery/IMG20220815110741.jpg';
-import image6 from '../assets/Gallery/IMG20220815111443.jpg';
-
 import Navbar from '../components/Navbar';
 import Footer from './Footer';
-
-const images = [
-  { src: image1, quote: `"A boon for the earth"` },
-  { src: image2, quote: `"The farmer has to be an optimist or he wouldn't still be a farmer. – Will Rogers"` },
-  { src: image3, quote: `"The nation that destroys its soil destroys itself. – Franklin D. Roosevelt"` },
-  { src: image4, quote: `"Farming is a profession of hope. – Brian Brett"` },
-  { src: image5, quote: `"In every conceivable manner, the family is link to our past, bridge to our future. – Alex Haley"` },
-  { src: image6, quote: `"The best fertilizer is the farmer's shadow."` },
-];
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { deleteGalleryImage, getGalleryList } from '../api/usersApi';
+import Confirmation from '../components/Confirmation';
 
 const GalleryScreen = () => {
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+
+  const { isError, isLoading, isSuccess, data: galleryImages, error } = useQuery(
+    ["gallery"],
+    () => getGalleryList()
+  );
+
+  const queryClient = useQueryClient();
+
+  const deleteGalleryMutation = useMutation(deleteGalleryImage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('gallery');
+    },
+  });
+
+  const reversedImages = galleryImages ? [...galleryImages].reverse() : [];
+
+
+  // console.log(galleryImages, 'galleryImages');
+
+  const navigate = useNavigate();
+
+  const { userDataContent } = useAuth();
+  const handleAddImage = () => {
+    navigate('/addGalleryImage')
+  }
+
+  const handleDeleteClick = (id) => {
+    setSelectedItemId(id);
+    showConfirmation();
+  };
+
+  const showConfirmation = () => {
+    setIsConfirmationVisible(true);
+  };
+
+  const hideConfirmation = () => {
+    setIsConfirmationVisible(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedItemId) {
+      await deleteGalleryMutation.mutateAsync(selectedItemId);
+      hideConfirmation();
+      setSelectedItemId(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setSelectedItemId(null);
+    hideConfirmation();
+  };
+
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="bg-gray-100 pt-36 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold text-gray-800 mb-6">Gallery</h1>
-          {images.map((image, index) => (
+          {userDataContent?.userType === 'admin' && (
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center md:mr-5">
+              <button onClick={handleAddImage} className="bg-primary-500 text-white py-2 px-4 rounded lg:self-end mt-4 md:mt-0">
+                <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                Add Image
+              </button>
+            </div>)}
+          {reversedImages?.map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col md:flex-row md:items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'
+              className={`relative flex flex-col md:flex-row md:items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : 'md:flex-row'
                 }`}
             >
               <div className="md:w-1/2 md:p-4 mt-4">
-                <div className="text-2xl text-primary-700 border shadow-2xl p-2 bg-green-100 text-center">{image.quote}</div>
-                
+                <div className="text-2xl text-primary-700 border shadow-2xl p-2 bg-green-100 text-center">
+                  {item.content}
+                </div>
               </div>
               <div className="md:w-1/2 md:p-4">
-                <img src={image.src} alt={image.title} className="w-full h-auto object-cover rounded-lg shadow-2xl z-10" />
+                <div className="relative">
+                  <img
+                    src={`https://agromart-dev.onrender.com/${item.image}`}
+                    // src={`http://localhost:3000/${item.image}`}
+                    alt={item._id}
+                    className="w-full h-auto object-cover rounded-lg shadow-2xl z-10"
+                  />
+                  {userDataContent?.userType === 'admin' && (
+                    <button
+                      onClick={() => handleDeleteClick(item._id)}
+                      className="absolute top-2 right-2 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+      {isConfirmationVisible && (
+        <Confirmation
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+          message="Are you sure you want to delete this item?"
+        />
+      )}
       <Footer />
     </>
   );

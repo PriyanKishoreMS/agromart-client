@@ -11,22 +11,15 @@ const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns, onOpti
     const titleRef = useRef();
     const droplistRef = useRef();
 
-    window.addEventListener("click", (e) => {
-        // if(e.target !== droplistRef.current && e.target !== titleRef.current) {
-            // console.log(e.target === droplistRef.current);
-            // closeDropdowns();
-        // }
-    })
-
     return (
-        <div className="relative z-10">
+        <div className="relative ml-2">
             <button
                 
-                className="flex border border-primary-500 bg-primary-500 p-2 font-bold rounded-lg items-center mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-slate-200"
+                className="flex w-28 border border-primary-500 bg-primary-500 p-2 font-bold rounded-lg items-center mt-4 mr-4 text-white lg:inline-block lg:mt-0 hover:text-slate-200"
                 onClick={() => toggleDropdown(title)}
             >
-                <div ref={titleRef} className="flex items-center"> {/* Add a flex container */}
-                    <span className="mr-1">{title}</span> {/* Add some margin to separate the title and svg */}
+                <div ref={titleRef} className="flex items-center">
+                    <span className="w-20">{title}</span> 
                     <svg
                         className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                         viewBox="0 0 20 20"
@@ -41,7 +34,7 @@ const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns, onOpti
                 </div>
             </button>
             {isOpen && (
-                <div ref={droplistRef} className="absolute cursor-pointer lg:right-0 mt-2 bg-white rounded shadow-md lg:-left-16">
+                <div ref={droplistRef} className="z-50 absolute cursor-pointer lg:right-0 mt-2 bg-white rounded shadow-md lg:-left-16">
                     <ul
                     // className="py-2 w-52 overflow-y-auto"
                     >
@@ -61,44 +54,3 @@ const Dropdown = ({ title, items, isOpen, toggleDropdown, closeDropdowns, onOpti
 };
 
 export default Dropdown;
-
-
-// import { useState } from "react";
-// import { Link } from "react-router-dom";
-
-// const Dropdown = ({ title, items }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const toggleDropdown = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   return (
-//     <div className="relative mr-6">
-//       <button
-//         className="text-white hover:text-yellow-700 focus:outline-none"
-//         onClick={toggleDropdown}
-//       >
-//         {title}
-//       </button>
-//       {isOpen && (
-//         <div className="absolute right-0 w-40 mt-2 bg-white rounded shadow-md">
-//           <ul className="py-2">
-//             {items.map((item, index) => (
-//               <li key={index}>
-//                 <Link
-//                   to={item.path}
-//                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-//                 >
-//                   {item.label}
-//                 </Link>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Dropdown

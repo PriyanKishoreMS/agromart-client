@@ -17,16 +17,22 @@ import agriculture from '../assets/agriculture.jpg';
 import whatsappicon from '../assets/whatsappicon.jpg';
 import { useEffect, useState } from "react";
 import './Home.css';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import ImageSlider from "../components/ImageSlider";
 import QuoteSlider from "../components/QuoteSlider";
+import { getBlogs } from "../api/usersApi";
+import { useQuery } from "react-query";
+import BlogSlider from "../components/BlogSlider";
 
 
 const Home = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [showButton, setShowButton] = useState(false); const [currentPara, setCurrentPara] = useState(0);
+	const [showButton, setShowButton] = useState(false);
+	const [currentPara, setCurrentPara] = useState(0);
+	// const [currentBlogIndex, setCurrentBlogIndex] = useState(1);
+	const itemsPerPage = 9999;
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -38,6 +44,8 @@ const Home = () => {
 
 	const navigate = useNavigate();
 
+
+
 	useEffect(() => {
 		setIsLoading(true);
 		const handleScroll = () => {
@@ -46,8 +54,8 @@ const Home = () => {
 			const scrollPosition = scrollTop + windowHeight;
 
 			const element = document.getElementById('center-content');
-			const elementOffsetTop = element.offsetTop;
-			const elementHeight = element.offsetHeight;
+			const elementOffsetTop = element?.offsetTop;
+			const elementHeight = element?.offsetHeight;
 			const elementPosition = elementOffsetTop + elementHeight;
 
 			if (scrollPosition > elementPosition) {
@@ -77,6 +85,15 @@ const Home = () => {
 			window.removeEventListener('scroll', handleScroll);
 		};
 	}, []);
+
+	const { data: blogslist, error, isLoading: isBlogLoading } = useQuery(
+		['blogs', null, 1], // Adjust query key
+		() => getBlogs(null, 1, itemsPerPage)
+	);
+
+
+	// console.log(blogslist, 'blogslist')
+
 
 	const handleScrollToTop = () => {
 		window.scrollTo({
@@ -108,6 +125,10 @@ const Home = () => {
 		// Add more quotes here
 	];
 
+	const openWhatsApp = () => {
+		window.open('https://wa.me/+919176889201', '_blank');
+	};
+
 	// const images = ['Agribg.jpg', 'Agribg2.jpeg', 'Agribg3.jpg', 'Agribg4.jpg', 'Agribg5.jpg']
 
 
@@ -130,16 +151,12 @@ const Home = () => {
 							<h1 className={`lg:text-4xl md:text-3xl mb-8 text-2xl font-bold text-center text-primary-500	 animate-fade-in`}>
 								Welcome to
 
-								<h2 className="text-4xl font-bold text-primary-500 font-serif italic">Agro Edu Vaango</h2>
-								{/* <a href="https://fontmeme.com/tamil/">
-									<img className="h-10 w-40" src="https://fontmeme.com/permalink/230803/a88b4ff76703e7840aa5ad0393f1df3e.png" alt="tamil" border="0" />
-								</a> */}
-								{/* <p>Agroவாங்கோ</p> */}
+								<p className="text-4xl font-bold text-primary-500 font-serif italic">Agro Edu Vaango</p>
 							</h1>
 						</div>
-						<div className="mt-20 px-5 justify-center items-center text-center"> {/* Added text-center class */}
+						<div className="mt-20 px-5 justify-center items-center text-center">
 							<div className="lg:mx-12 lg:px-4 sm:px-1 sm:mx-4">
-								<h1 className="text-white font-bold text-center lg:text-5xl sm:text-sm font-serif"> {/* Added text-center class */}
+								<h1 className="text-white font-bold text-center lg:text-5xl sm:text-sm font-serif">
 									A single step taken forward will pave the way for thousands to follow!
 								</h1>
 								<p className="text-slate-300 mt-5 text-center">
@@ -209,10 +226,6 @@ const Home = () => {
 						<img src={agriculture} className="w-full h-auto md:h-3/4 px-4 md:px-10 rounded-xl" alt="Agriculture" />
 					</div>
 				</div>
-				{/* It's the promise of abundance,
-						the stewardship of the land, and the resilience that propels societies forward. Beyond economics, it's a cultural compass,
-						shaping traditions and uniting diverse voices under the banner of food. In fields that stretch to the horizon,
-						we witness innovation blooming, as science and heart intertwine to tackle our world's challenges. */}
 				<div className="bg-black bg-no-repeat bg-cover">
 					<h1 class="text-4xl font-semibold text-center mb-12 text-primary-700 pt-10" style={{ fontFamily: 'cursive' }}>Bond between Honeybee & Agriculture</h1>
 					<div className="container mx-auto px-4 py-8 flex flex-col md:flex-row">
@@ -281,121 +294,56 @@ const Home = () => {
 							<div className="relative h-full">
 								<video autoPlay loop muted className="w-full h-full">
 									<source src={honeybee} type="video/mp4" />
-									{/* Your browser does not support the video tag. */}
 								</video>
 							</div>
 						</div>
 					</div>
 				</div>
-				{/* <div className="pt-16 justify-center items-center bg-black bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg1})` }}>
-					<div>
-						<h1 className="mb-4 lg:text-4xl sm:text-2xl font-bold text-primary-700 px-4 sm:pl-10">
-							Invest on your convenience
-						</h1>
-						<p className="mt-10 lg:text-xl text-white lg:w-1/2 px-4 sm:pl-10">
-							Take part based on your convenience and necessity. Even small green steps count!
-						</p>
-					</div>
-					<div
-						id="center-content"
-						className={`transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
-					>
-						<div className="container mx-auto px-4 lg:px-72 py-8">
-							<div className="grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2">
-								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest1})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-primary-500">
-										New Farm Today
-									</h2>
-									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Short-term investment</h1>
-									<p className="text-white">
-										Invest in farms that will be ready for harvest in 3-18 months
-									</p>
-									<button onClick={handlebrowsefarm} className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">Browse Farm</button>
-								</div>
-								<div className="p-6 sm:p-10 transition-all duration-150 ease-in-out rounded shadow hover:shadow-2xl animate-custom" style={{ backgroundImage: `url(${invest2})` }}>
-									<h2 className="mb-4 text-2xl font-semibold text-primary-500">
-										Fully Funded
-									</h2>
-									<h1 className="mb-4 mt-8 text-4xl font-bold text-white">Long-term investment</h1>
-									<p className="text-white">
-										Consider farms that have a long-term investment program
-									</p>
-									<button onClick={handlelearnmore} className="border-2 mt-4 p-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">Learn more</button>
-								</div>
-							</div>
+				<div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${permaculture})` }}>
+					<h1 className="text-4xl font-bold text-center mb-12 text-primary-700">Welcome to Permaculture</h1>
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Sustainability</h2>
+							<p className="text-white">Permaculture promotes sustainable practices by working with nature rather than against it, ensuring long-term viability.</p>
 						</div>
-					</div>
-				</div> */}
-				<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${permaculture})` }}>
-					<h1 class="text-4xl font-bold text-center mb-12 text-primary-700">Welcome to Permaculture</h1>
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Sustainability</h2>
-							<p class="text-white">Permaculture promotes sustainable practices by working with nature rather than against it, ensuring long-term viability.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Regenerative Agriculture</h2>
+							<p className="text-white">It focuses on regenerating the soil and natural ecosystems, leading to improved soil health and fertility.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Regenerative Agriculture</h2>
-							<p class="text-white">It focuses on regenerating the soil and natural ecosystems, leading to improved soil health and fertility.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Biodiversity</h2>
+							<p className="text-white">Permaculture encourages the cultivation of diverse plant and animal species, enhancing ecosystem resilience.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Biodiversity</h2>
-							<p class="text-white">Permaculture encourages the cultivation of diverse plant and animal species, enhancing ecosystem resilience.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Water Conservation</h2>
+							<p className="text-white">It emphasizes the efficient use and management of water resources, reducing waste and enhancing water quality.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Water Conservation</h2>
-							<p class="text-white">It emphasizes the efficient use and management of water resources, reducing waste and enhancing water quality.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Energy Efficiency</h2>
+							<p className="text-white">Permaculture design seeks to minimize energy inputs and optimize energy outputs in various systems.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Energy Efficiency</h2>
-							<p class="text-white">Permaculture design seeks to minimize energy inputs and optimize energy outputs in various systems.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Local Food Production</h2>
+							<p className="text-white">Permaculture encourages the cultivation of food locally, reducing the dependence on distant supply chains.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Local Food Production</h2>
-							<p class="text-white">Permaculture encourages the cultivation of food locally, reducing the dependence on distant supply chains.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Community Engagement</h2>
+							<p className="text-white">Permaculture often fosters a strong sense of community, as it encourages cooperation and sharing of resources.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Community Engagement</h2>
-							<p class="text-white">Permaculture often fosters a strong sense of community, as it encourages cooperation and sharing of resources.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Waste Reduction</h2>
+							<p className="text-white">Permaculture systems aim to minimize waste by reusing and recycling materials within the ecosystem.</p>
 						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Waste Reduction</h2>
-							<p class="text-white">Permaculture systems aim to minimize waste by reusing and recycling materials within the ecosystem.</p>
-						</div>
-						<div class="bg-black p-6 rounded-lg shadow-md">
-							<h2 class="text-xl font-semibold mb-2 text-primary-500">Climate Change Mitigation</h2>
-							<p class="text-white">By sequestering carbon through tree planting and sustainable land management, permaculture can help combat climate change.</p>
+						<div className="bg-black p-6 rounded-lg shadow-md">
+							<h2 className="text-xl font-semibold mb-2 text-primary-500">Climate Change Mitigation</h2>
+							<p className="text-white">By sequestering carbon through tree planting and sustainable land management, permaculture can help combat climate change.</p>
 						</div>
 					</div>
 				</div>
-				<div className="justify-center pt-10 items-center pb-20 bg-black bg-no-repeat bg-cover">
-					<div className="mx-8 md:mx-48 pb-16 bg-primary-700 border border-primary-700 pt-12 bg-cover relative">
-						<h1 className="mb-4 text-center lg:text-4xl sm:text-2xl font-bold text-white pl-4 md:pl-10">How it works</h1>
-						<p className="text-white text-center text-xl md:text-2xl mx-4 md:mx-48">
-							Take lands based on your requirements. We provide you affordable options.
-						</p>
-						<div className="grid grid-cols-1 md:grid-cols-2 px-4 md:px-5 py-8 border-2 border-primary-700 mx-4 md:mx-48 mt-10 transition-all duration-150 ease-in-out rounded-xl shadow-lg">
-							<div>
-								<p className="mb-4 text-center lg:text-3xl sm:text-sm font-bold text-white">
-									Select your farmshare and complete the reservation form.
-								</p>
-							</div>
-							<div>
-								<p className="mb-4 mt-3 text-center lg:text-xl sm:text-sm text-white">
-									Each and every step you take brings a change, a change that the earth and future generations require.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				{/* <div className="justify-center items-center bg-black py-8 bg-no-repeat bg-cover" style={{ backgroundImage: `url(${agribg2})` }}>
-					<div className="">
-						<div className="my-6 py-8 transition-all duration-150 ease-in-out bg-transparent rounded shadow animate-fade-in">
-							<div>
-								<p className="text-center px-6 text-black text-2xl animate-pulse">"A boon for the earth"</p>
-							</div>
-						</div>
-					</div>
-				</div> */}
+				<BlogSlider
+					blogs={blogslist?.blogs}
+					isLoading={isBlogLoading}
+				/>
 				<QuoteSlider quotes={quotes} />
 				<div className="justify-center items-center bg-black py-8 bg-no-repeat bg-cover">
 					<div className="mx-auto lg:w-3/4">
@@ -406,46 +354,24 @@ const Home = () => {
 								</a> is <span className="text-primary-500 font-serif font-bold italic">Agro Edu Vaango</span>
 							</h1>
 							<div className="flex justify-center items-center pt-5">
-								<button onClick={handleSignin} className="border-2 mt-4 px-8 py-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">
+								<button onClick={handleSignin} className="border-2 mt-4 mb-4 px-8 py-3 rounded-lg font-bold border-primary-500 text-white bg-primary-500 hover:text-primary-500 hover:bg-black">
 									Join Us
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				{/* <button
-					className={`fixed z-10 bottom-16 right-4 p-3 bg-green-500 text-white rounded-lg ${showButton ? 'block' : 'hidden'}`}
-					onClick={() => {
-						const phoneNumber = '1234567890'; // Replace with the desired phone number
-						const whatsappLink = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
-						window.open(whatsappLink, '_blank');
-					}}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-7 w-7"
-						fill="currentColor"
-						style="color: #128c7e"
-						viewBox="0 0 24 24">
-						<path
-							d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-					</svg>
-				</button> */}
-				<div className="fixed bottom-16 right-4 pb-1 z-50">
-					<a
-						href="https://wa.me/+919176889201"  // Replace with the actual WhatsApp number
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<img
-							src={whatsappicon}  // Replace with the path to your WhatsApp icon SVG or image
-							alt="WhatsApp Icon"
-							className="w-12 h-12 rounded-lg"  // Adjust the width and height as needed
-						/>
-					</a>
+				<div className="fixed bottom-16 right-10 pb-1 z-50">
+						<Link to="#" onClick={openWhatsApp}>
+							<img
+								src={whatsappicon}
+								alt="WhatsApp Icon"
+								className="w-12 h-12 rounded-lg"
+							/>
+						</Link>
 				</div>
 				<button
-					className={`fixed z-10 bottom-4 right-4 p-3 bg-primary-700 text-white rounded-lg ${showButton ? 'block' : 'hidden'
+					className={`fixed z-50 bottom-4 right-10 p-3 bg-primary-700 text-white rounded-lg ${showButton ? 'block' : 'hidden'
 						}`}
 					onClick={handleScrollToTop}
 				>

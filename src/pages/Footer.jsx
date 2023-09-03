@@ -1,6 +1,19 @@
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 const Footer = () => {
+
+    const openInstagram = () => {
+        window.open('https://www.instagram.com/colonel_sengol', '_blank')
+    }
+
+    const openFacebook = () => {
+        window.open('https://www.facebook.com/sengol.raju.9', '_blank')
+    }
+
+    const openTwitter = () => {
+        window.open('https://twitter.com/SustainableWPT?s=20', '_blank')
+    }
     return (
         <>
 
@@ -11,8 +24,6 @@ const Footer = () => {
                             <h2 className="text-xl font-bold mb-4">Company</h2>
                             <ul className="list-none">
                                 <li><a href="/aboutUs">About Us</a></li>
-                                <li><a href="/">Team</a></li>
-                                <li><a href="/">Careers</a></li>
                                 <li><a href="/contactUs">Contact Us</a></li>
                             </ul>
                         </div>
@@ -35,9 +46,21 @@ const Footer = () => {
                         <div>
                             <h2 className="text-xl font-bold mb-4">Follow Us</h2>
                             <ul className="list-none">
-                                <li><a href="/">Facebook</a></li>
-                                <li><a href="/">Twitter</a></li>
-                                <li><a href="/">Instagram</a></li>
+                                <li>
+                                    <Link to='#' onClick={openFacebook}>
+                                        <a>Facebook</a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to='#' onClick={openTwitter}>
+                                        <a>Twitter</a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="#" onClick={openInstagram}>
+                                        <a>Instagram</a>
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                     </div>
