@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import { useMutation, useQueryClient } from 'react-query';
 import { addImageToGallery } from '../api/usersApi';
 import { useNavigate } from 'react-router-dom';
+import Alert from '../components/Alert';
 
 const GalleryAddScreen = () => {
     // const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ const GalleryAddScreen = () => {
     });
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
 
 
     const navigate = useNavigate();
@@ -35,9 +37,9 @@ const GalleryAddScreen = () => {
     // React Query mutation for adding image to the gallery
     const addImageMutation = useMutation((formData) => addImageToGallery(formData), {
         onSuccess: () => {
+            setShowAlert(true);
             // Invalidate and refetch the gallery data after successful submission
             queryClient.invalidateQueries('gallery');
-            navigate(-1);
         },
     });
 
@@ -82,13 +84,18 @@ const GalleryAddScreen = () => {
         }
     };
 
+    const handleAlertClose = () => {
+        setShowAlert(false);
+        navigate(-1);
+    };
+
     return (
         <>
             <Navbar />
             <div className="container pt-36 pb-4 mx-auto min-h-screen">
                 <h1 className="text-2xl font-semibold mb-4">Add Image to Gallery</h1>
-                {/* <form action="http://localhost:3000/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}> */}
-                <form action="https://agromart-dev.onrender.com/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
+                <form action="http://localhost:3000/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
+                {/* <form action="https://agromart-dev.onrender.com/uploads/gallery" method="post" encType="multipart/form-data" onSubmit={handleSubmit}> */}
                     <div className="mb-4">
                         <label htmlFor="image" className="block text-sm font-medium text-gray-700">
                             Image
@@ -125,6 +132,13 @@ const GalleryAddScreen = () => {
                     </button>
                 </form>
             </div>
+            {showAlert && (
+                <Alert
+                    message="Image added successfully!"
+                    type="success"
+                    onClose={handleAlertClose}
+                />
+            )}
             <Footer />
         </>
     );

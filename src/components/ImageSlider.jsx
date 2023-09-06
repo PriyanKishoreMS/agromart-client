@@ -29,8 +29,8 @@ const ImageSlider = () => {
                 {galleryImages?.map((item, index) => (
                     <div className='pr-2 my-auto aspect-w-16 aspect-h-9' key={item._id}>
                         <img
-                            src={`https://agromart-dev.onrender.com/${item.image}`}
-                            // src={`http://localhost:3000/${item.image}`}
+                            // src={`https://agromart-dev.onrender.com/${item.image}`}
+                            src={`http://localhost:3000/${item.image}`}
                             alt={item._id} 
                             className="w-full h-auto rounded-md" />
                     </div>

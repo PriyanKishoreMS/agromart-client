@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const ENDPOINT_URL = "https://agromart-dev.onrender.com/api";
-// const ENDPOINT_URL = "http://localhost:3000/api";
+// const ENDPOINT_URL = "https://agromart-dev.onrender.com/api";
+const ENDPOINT_URL = "http://localhost:3000/api";
 
 
 

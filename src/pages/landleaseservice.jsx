@@ -41,6 +41,7 @@ const LandLeaseService = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     const { user } = useAuth();
 
@@ -51,6 +52,7 @@ const LandLeaseService = () => {
 
     const addLandServiceMutation = useMutation(postLandService, {
         onSuccess: () => {
+            setShowSuccessAlert(true);
             queryClient.invalidateQueries('lands');
         },
     });
@@ -157,6 +159,12 @@ const LandLeaseService = () => {
         setShowAlert(false);
     }
 
+
+    const handleAlertClose = () => {
+        setShowSuccessAlert(false);
+        navigate(-1);
+    };
+
     const handleSubmit = async e => {
         try {
             e.preventDefault();
@@ -186,7 +194,6 @@ const LandLeaseService = () => {
             if (!hasErrors) {
                 addLandServiceMutation.mutate(landServiceData);
                 setFormData(null);
-                navigate(-1);
             }
             else {
                 setShowAlert(true);
@@ -296,8 +303,8 @@ const LandLeaseService = () => {
                                 <h2 className="mb-4 text-2xl font-semibold text-primary-700">
                                     Post Your Tender Here
                                 </h2>
-                                {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
-                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
+                                <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
+                                    {/* <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data"> */}
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (
@@ -589,6 +596,13 @@ const LandLeaseService = () => {
                         message={'Kindly Enter all the fields'}
                         type={'warning'}
                         onClose={handleClose}
+                    />
+                )}
+                {showSuccessAlert && (
+                    <Alert
+                        message="Post added successfully!"
+                        type="success"
+                        onClose={handleAlertClose}
                     />
                 )}
                 <Footer />

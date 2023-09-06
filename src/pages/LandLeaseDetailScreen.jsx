@@ -42,8 +42,8 @@ const LandLeaseDetailScreen = () => {
                                 data.landImage.map((imageUrl, imgIndex) => (
                                     <div key={imgIndex} className="carousel-image">
                                         <img
-                                            src={`https://agromart-dev.onrender.com/${imageUrl}`}
-                                            // src={`http://localhost:3000/${imageUrl}`}
+                                            // src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                            src={`http://localhost:3000/${imageUrl}`}
                                             alt={`Image ${imgIndex + 1}`}
                                             className="max-w-full container mb-2"
                                             style={{ width: '100%', height: '250px' }}
@@ -63,8 +63,8 @@ const LandLeaseDetailScreen = () => {
                                 data.landImage.map((imageUrl, imgIndex) => (
                                     <div key={imgIndex} className="gallery-item">
                                         <img
-                                            src={`https://agromart-dev.onrender.com/${imageUrl}`}
-                                            // src={`http://localhost:3000/${imageUrl}`}
+                                            // src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                                            src={`http://localhost:3000/${imageUrl}`}
                                             alt={`Image ${imgIndex + 1}`}
                                             style={{ width: '72px', height: '72x' }}
                                         />

@@ -134,8 +134,8 @@ const SellProductDashboard = () => {
                     item.productImage.map((imageUrl, imgIndex) => (
                       <div key={imgIndex} className="carousel-image">
                         <img
-                          // src={`http://localhost:3000/${imageUrl}`}
-                          src={`https://agromart-dev.onrender.com/${imageUrl}`}
+                          src={`http://localhost:3000/${imageUrl}`}
+                          // src={`https://agromart-dev.onrender.com/${imageUrl}`}
                           alt={`Image ${imgIndex + 1}`}
                           className="w-full h-auto"
                         />

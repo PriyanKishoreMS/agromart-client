@@ -90,8 +90,8 @@ const GalleryScreen = () => {
               <div className="md:w-1/2 md:p-4">
                 <div className="relative">
                   <img
-                    src={`https://agromart-dev.onrender.com/${item.image}`}
-                    // src={`http://localhost:3000/${item.image}`}
+                    // src={`https://agromart-dev.onrender.com/${item.image}`}
+                    src={`http://localhost:3000/${item.image}`}
                     alt={item._id}
                     className="w-full h-auto object-cover rounded-lg shadow-2xl z-10"
                   />

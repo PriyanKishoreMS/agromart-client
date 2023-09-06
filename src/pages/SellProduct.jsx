@@ -34,11 +34,13 @@ const SellProductService = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     const queryClient = useQueryClient();
 
     const addProductMutation = useMutation(postProduct, {
         onSuccess: () => {
+            setShowSuccessAlert(true);
             queryClient.invalidateQueries('products');
         },
     });
@@ -153,6 +155,11 @@ const SellProductService = () => {
         setShowAlert(false);
     }
 
+    const handleAlertClose = () => {
+        setShowSuccessAlert(false);
+        navigate(-1);
+    };
+
     const handleSubmit = async e => {
         try {
             e.preventDefault();
@@ -176,7 +183,6 @@ const SellProductService = () => {
             if (!hasErrors) {
                 addProductMutation.mutate(newData);
                 setFormData(null);
-                navigate(-1);
             }
             else {
                 setShowAlert(true);
@@ -288,8 +294,8 @@ const SellProductService = () => {
                                 <h2 className="mb-4 text-2xl font-semibold text-primary-700">
                                     Post Your Product Here
                                 </h2>
-                                {/* <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data"> */}
-                                <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data">
+                                <form action="http://localhost:3000/uploads/lands" method="post" encType="multipart/form-data">
+                                {/* <form action="https://agromart-dev.onrender.com/uploads/lands" method="post" encType="multipart/form-data"> */}
                                     <div className="container mx-auto p-4">
                                         <div className="max-w-md mx-auto">
                                             {currentPage === 1 && (
@@ -498,6 +504,14 @@ const SellProductService = () => {
                         message={'Kindly Enter all the fields'}
                         type={'warning'}
                         onClose={handleClose}
+                    />
+                )}
+                
+                {showSuccessAlert && (
+                    <Alert
+                        message="Product added successfully!"
+                        type="success"
+                        onClose={handleAlertClose}
                     />
                 )}
                 <Footer />
